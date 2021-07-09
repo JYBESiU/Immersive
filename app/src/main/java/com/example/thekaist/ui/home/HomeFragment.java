@@ -1,4 +1,4 @@
-package com.example.youtube.ui.home;
+package com.example.thekaist.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

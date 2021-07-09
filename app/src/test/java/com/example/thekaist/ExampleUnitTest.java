@@ -1,4 +1,4 @@
-package com.example.youtube;
+package com.example.thekaist;
 
 import org.junit.Test;
 

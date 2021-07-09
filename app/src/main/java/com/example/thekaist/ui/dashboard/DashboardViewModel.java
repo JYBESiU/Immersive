@@ -1,4 +1,4 @@
-package com.example.youtube.ui.dashboard;
+package com.example.thekaist.ui.dashboard;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

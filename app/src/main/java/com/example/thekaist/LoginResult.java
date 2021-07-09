@@ -1,6 +1,4 @@
-package com.example.youtube;
-
-import com.google.gson.annotations.SerializedName;
+package com.example.thekaist;
 
 public class LoginResult {
 

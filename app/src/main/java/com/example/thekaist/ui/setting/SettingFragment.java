@@ -1,4 +1,4 @@
-package com.example.youtube.ui.setting;
+package com.example.thekaist.ui.setting;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.example.youtube;
+package com.example.thekaist;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://172.10.18.152:443";
+    private String BASE_URL = "http://192.249.18.152:443";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

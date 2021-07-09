@@ -1,16 +1,16 @@
-package com.example.youtube.ui.setting;
+package com.example.thekaist.ui.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SettingViewModel extends ViewModel {
+public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SettingViewModel() {
+    public HomeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is home fragment");
     }
 
     public LiveData<String> getText() {

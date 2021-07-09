@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.thekaist.ui.setting.NotificationsFragment"
+        android:id="@+id/navigation_setting"
+        android:name="com.example.thekaist.ui.setting.SettingFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_setting" />
 </navigation>

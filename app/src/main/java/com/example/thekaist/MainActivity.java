@@ -3,6 +3,7 @@ package com.example.thekaist;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -82,12 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
                             LoginResult result = response.body();//응답의 내용. 이와같은 디비구조인게 loginresult.
 
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-                            builder1.setTitle(result.getName());
-                            builder1.setMessage(result.getEmail());
+                            Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
+                            intent.putExtra("ID", result.getName());
 
-                            builder1.show();
-
+                            startActivity(intent);
+                            finish();
                         } else if (response.code() == 404) {
                             Toast.makeText(MainActivity.this, "Wrong Credentials",
                                     Toast.LENGTH_LONG).show();

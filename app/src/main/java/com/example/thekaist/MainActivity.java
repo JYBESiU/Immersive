@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.152:443";
+    private String BASE_URL = "http://192.249.18.171:443";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,39 +68,45 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
+                Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
+                intent.putExtra("ID", emailEdit.getText().toString());
 
-                map.put("email", emailEdit.getText().toString());
-                map.put("password", passwordEdit.getText().toString());
+                startActivity(intent);
+                finish();
 
-                Call<LoginResult> call = retrofitInterface.executeLogin(map);//로그인리절트 클래스 부르는데저 map넣어서 함
-
-                call.enqueue(new Callback<LoginResult>() {
-                    @Override
-                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-
-                        if (response.code() == 200) {
-
-                            LoginResult result = response.body();//응답의 내용. 이와같은 디비구조인게 loginresult.
-
-                            Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
-                            intent.putExtra("ID", result.getName());
-
-                            startActivity(intent);
-                            finish();
-                        } else if (response.code() == 404) {
-                            Toast.makeText(MainActivity.this, "Wrong Credentials",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<LoginResult> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, t.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+//                HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
+//
+//                map.put("email", emailEdit.getText().toString());
+//                map.put("password", passwordEdit.getText().toString());
+//
+//                Call<LoginResult> call = retrofitInterface.executeLogin(map);//로그인리절트 클래스 부르는데저 map넣어서 함
+//
+//                call.enqueue(new Callback<LoginResult>() {
+//                    @Override
+//                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+//
+//                        if (response.code() == 200) {
+//
+//                            LoginResult result = response.body();//응답의 내용. 이와같은 디비구조인게 loginresult.
+//
+//                            Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
+//                            intent.putExtra("ID", result.getName());
+//
+//                            startActivity(intent);
+//                            finish();
+//                        } else if (response.code() == 404) {
+//                            Toast.makeText(MainActivity.this, "Wrong Credentials",
+//                                    Toast.LENGTH_LONG).show();
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<LoginResult> call, Throwable t) {
+//                        Toast.makeText(MainActivity.this, t.getMessage(),
+//                                Toast.LENGTH_LONG).show();
+//                    }
+//                });
 
             }
         });

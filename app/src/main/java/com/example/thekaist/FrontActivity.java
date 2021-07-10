@@ -36,7 +36,7 @@ public class FrontActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.171:443";
+    private String BASE_URL = "http://192.249.18.152:443";
 
     public static Socket mSocket;
 
@@ -121,7 +121,6 @@ public class FrontActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getApplicationContext(), "OK Click", Toast.LENGTH_SHORT).show();
                         mSocket.emit("acceptGame", ask, accept);
 
                         Intent intent = new Intent(getApplicationContext(), GameActivity.class);

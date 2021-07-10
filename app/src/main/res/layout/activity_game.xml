@@ -5,17 +5,108 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_ask"/>
+            android:id="@+id/target"
+            android:text="Target number"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:layout_marginTop="15sp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text_accept"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="8sp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="플레이어"
+                android:textSize="25sp"
+                android:id="@+id/ply1"
+                android:layout_weight="1"
+                android:gravity="end"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="점수"
+                android:textStyle="bold"
+
+                android:textSize="20sp"
+                android:id="@+id/ply1score"
+                android:layout_weight="0.8"
+                android:gravity="end"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="20sp"
+                android:textStyle="bold"
+
+                android:id="@+id/vs"
+                android:layout_weight="0.3"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="점수"
+                android:textStyle="bold"
+
+                android:textSize="20sp"
+                android:id="@+id/ply2score"
+                android:layout_weight="0.8"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="플레이어"
+                android:textSize="20sp"
+                android:id="@+id/ply2"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/show_cards"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="5sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp"
+            >
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageButton
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                android:id="@+id/buzzer"
+                android:src="@drawable/ic_baseline_pan_tool_24"/>
+
+            <ImageButton
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                android:id="@+id/pass"
+                android:src="@drawable/ic_baseline_not_interested_24"
+                android:layout_marginStart="50sp"/>
+
+        </LinearLayout>
+
+
+
+
     </LinearLayout>
 
 

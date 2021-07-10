@@ -1,13 +1,21 @@
 package com.example.thekaist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
+
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class GameActivity extends AppCompatActivity {
     String ask;
@@ -17,6 +25,21 @@ public class GameActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     //어댑터 필요
     private ImageButton buzzer, pass;
+
+
+    public static Socket mSocket;
+
+    private Context activity = this;
+    private Gson gson = new Gson();
+    private String roomname;
+
+
+    Socket hSocket;
+    String id;
+
+    private String BASE_URL = "http://192.249.18.152:443";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +63,9 @@ public class GameActivity extends AppCompatActivity {
         ply1.setText(ask);
         ply2.setText(accept);
 
+         hSocket = FrontActivity.mSocket;
+         id = FrontActivity.id;
+
         buzzer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,9 +81,19 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
+        hSocket.on("enterroom", enterroom);
 
 
 
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        hSocket.emit("leave", ask, accept, id);
+        super.onBackPressed();
     }
 
     private void sayPass() {
@@ -65,4 +101,13 @@ public class GameActivity extends AppCompatActivity {
 
     private void speak() {
     }
+
+    public Emitter.Listener enterroom = new Emitter.Listener() {
+
+        @Override
+        public void call(Object... args) {
+            roomname = args[0].toString();
+            Log.d("room", ""+roomname);
+        }
+    };
 }

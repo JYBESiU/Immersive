@@ -20,9 +20,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.thekaist.FrontActivity">
-
-        </activity>
+        <activity android:name="com.example.thekaist.FrontActivity"/>
+        <activity android:name="com.example.thekaist.GameActivity" />
     </application>
 
 </manifest>

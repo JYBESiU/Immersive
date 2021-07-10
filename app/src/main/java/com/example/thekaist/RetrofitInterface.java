@@ -1,6 +1,7 @@
 package com.example.thekaist;
 
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,5 +14,10 @@ public interface RetrofitInterface {
 
     @POST("/signup")
     Call<Void> executeSignup (@Body HashMap<String, String> map);
+
+    @POST("/online")
+    Call<List<UserInfo>> executeOnline();
+
+
 
 }

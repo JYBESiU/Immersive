@@ -3,7 +3,9 @@ package com.example.thekaist;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.152:443";
+    private String BASE_URL = "http://192.249.18.152:80";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                 HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
 
-                map.put("email", emailEdit.getText().toString());
+                map.put("id", emailEdit.getText().toString());
                 map.put("password", passwordEdit.getText().toString());
 
                 Call<LoginResult> call = retrofitInterface.executeLogin(map);//로그인리절트 클래스 부르는데저 map넣어서 함
@@ -79,18 +81,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
 
                         if (response.code() == 200) {
+                            Log.d("look", "200");
 
                             LoginResult result = response.body();//응답의 내용. 이와같은 디비구조인게 loginresult.
 
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-                            builder1.setTitle(result.getName());
-                            builder1.setMessage(result.getEmail());
+                            Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
+                            intent.putExtra("name", result.getName());
 
-                            builder1.show();
+                            startActivity(intent);
+                            finish();
 
                         } else if (response.code() == 404) {
-                            Toast.makeText(MainActivity.this, "Wrong Credentials",
-                                    Toast.LENGTH_LONG).show();
+                            Log.d("look", "400");
+                            Toast.makeText(MainActivity.this, "Wrong Credentials", Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 HashMap<String, String> map = new HashMap<>();
 
                 map.put("name", nameEdit.getText().toString());
-                map.put("email", emailEdit.getText().toString());
+                map.put("id", emailEdit.getText().toString());
                 map.put("password", passwordEdit.getText().toString());
 
                 Call<Void> call = retrofitInterface.executeSignup(map); //리턴하는게 없으니 void 

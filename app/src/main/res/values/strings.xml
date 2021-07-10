@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">TheKAIST</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Setting</string>
+
+    <string name="title_dashboard">Rank</string>
+    <string name="title_notifications">Profile</string>
+
 </resources>

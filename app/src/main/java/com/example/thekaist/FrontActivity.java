@@ -2,6 +2,7 @@ package com.example.thekaist;
 
 import android.content.Context;
 import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,10 +28,11 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import static android.widget.Toast.LENGTH_LONG;
 
 public class FrontActivity extends AppCompatActivity {
-    public static String name;
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
@@ -40,21 +42,34 @@ public class FrontActivity extends AppCompatActivity {
 
     private Context activity = this;
 
+    public static String name;
+    public static String id;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-        name = intent.getExtras().getString("ID");
 
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl(BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        retrofitInterface = retrofit.create(RetrofitInterface.class);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
 
         setContentView(R.layout.activity_front);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
+
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
+        id = intent.getStringExtra("id");
+
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_setting)
@@ -90,7 +105,7 @@ public class FrontActivity extends AppCompatActivity {
     public static Emitter.Listener waitBattle = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            mSocket.emit("waitBattle", name);
+            mSocket.emit("waitBattle", id);
         }
     };
 

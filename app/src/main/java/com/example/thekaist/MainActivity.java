@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -68,45 +73,43 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
-                intent.putExtra("ID", emailEdit.getText().toString());
+                HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
 
-                startActivity(intent);
-                finish();
+                map.put("id", emailEdit.getText().toString());
+                map.put("password", passwordEdit.getText().toString());
 
-//                HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
-//
-//                map.put("email", emailEdit.getText().toString());
-//                map.put("password", passwordEdit.getText().toString());
-//
-//                Call<LoginResult> call = retrofitInterface.executeLogin(map);//로그인리절트 클래스 부르는데저 map넣어서 함
-//
-//                call.enqueue(new Callback<LoginResult>() {
-//                    @Override
-//                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-//
-//                        if (response.code() == 200) {
-//
-//                            LoginResult result = response.body();//응답의 내용. 이와같은 디비구조인게 loginresult.
-//
-//                            Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
-//                            intent.putExtra("ID", result.getName());
-//
-//                            startActivity(intent);
-//                            finish();
-//                        } else if (response.code() == 404) {
-//                            Toast.makeText(MainActivity.this, "Wrong Credentials",
-//                                    Toast.LENGTH_LONG).show();
-//                        }
-//
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<LoginResult> call, Throwable t) {
-//                        Toast.makeText(MainActivity.this, t.getMessage(),
-//                                Toast.LENGTH_LONG).show();
-//                    }
-//                });
+                Call<LoginResult> call = retrofitInterface.executeLogin(map);//로그인리절트 클래스 부르는데저 map넣어서 함
+
+                call.enqueue(new Callback<LoginResult>() {
+                    @Override
+                    public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+
+                        if (response.code() == 200) {
+                            Log.d("look", "200");
+
+                            LoginResult result = response.body();//응답의 내용. 이와같은 디비구조인게 loginresult.
+
+                            Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
+                            intent.putExtra("name", result.getName());
+                            intent.putExtra("id", result.getId());
+
+                            startActivity(intent);
+                            finish();
+
+                        } else if (response.code() == 404) {
+                            Log.d("look", "400");
+                            Toast.makeText(MainActivity.this, "Wrong Credentials", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResult> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, t.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+
 
             }
         });
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 HashMap<String, String> map = new HashMap<>();
 
                 map.put("name", nameEdit.getText().toString());
-                map.put("email", emailEdit.getText().toString());
+                map.put("id", emailEdit.getText().toString());
                 map.put("password", passwordEdit.getText().toString());
 
                 Call<Void> call = retrofitInterface.executeSignup(map); //리턴하는게 없으니 void 

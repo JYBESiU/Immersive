@@ -4,44 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/colorPrimary">
 
     <ImageView
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:src="@drawable/genius"
-        android:id="@+id/logo"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/game_name"
-        android:text="더 카이스트"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/logo"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        />
+        android:src="@drawable/mainlogo"
+        android:id="@+id/logo" />
 
     <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:text="Log in"
         android:id="@+id/login"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/game_name"
-        android:layout_marginTop="100dp"
-        />
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="140dp"
+        android:background="@drawable/round_back"
+        android:scaleType="fitXY"/>
 
     <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:text="Sign up"
         android:id="@+id/signup"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/login" />
+        android:layout_below="@id/login"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/round_back"
+        android:scaleType="fitXY"/>
 
 </RelativeLayout>

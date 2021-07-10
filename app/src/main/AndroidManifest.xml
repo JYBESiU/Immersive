@@ -6,10 +6,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/genius"
+        android:icon="@drawable/applogo"
         android:label="@string/app_name"
         android:usesCleartextTraffic="true"
-        android:roundIcon="@drawable/genius"
+        android:roundIcon="@drawable/applogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.example.thekaist.MainActivity">

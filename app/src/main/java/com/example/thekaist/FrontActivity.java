@@ -1,5 +1,6 @@
 package com.example.thekaist;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -12,10 +13,27 @@ import androidx.navigation.ui.NavigationUI;
 
 public class FrontActivity extends AppCompatActivity {
 
+    public static String name;
+    public static String id;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
+
+        Intent intent = getIntent();
+        name = intent.getStringExtra("name");
+        id = intent.getStringExtra("id");
+
+
+
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

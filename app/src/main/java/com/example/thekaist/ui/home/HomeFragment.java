@@ -40,17 +40,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private Button game1;
-    private Button game2;
     private RecyclerView recyclerView;
-    private TextView show_req;
     private Button req;
     private ArrayList<online_player> onlist = new ArrayList<>();
     private SwipeRefreshLayout swipe;
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.152:80";
+    private String BASE_URL = "http://192.249.18.152:443";
 
 
 
@@ -69,8 +66,6 @@ public class HomeFragment extends Fragment {
 
         swipe = root.findViewById(R.id.swipe_home);
 
-        game1 = root.findViewById(R.id.Game1);
-        game2 = root.findViewById(R.id.Game2);
         recyclerView = root.findViewById(R.id.show_online);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -86,7 +81,6 @@ public class HomeFragment extends Fragment {
         }
 
 
-        show_req = root.findViewById(R.id.show_request);
         req = root.findViewById(R.id.request);
 
 

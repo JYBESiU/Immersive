@@ -23,12 +23,16 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.152:80";
+    private String BASE_URL = "http://192.249.18.152:443";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
                             intent.putExtra("name", result.getName());
+                            intent.putExtra("id", result.getId());
 
                             startActivity(intent);
                             finish();

@@ -18,6 +18,9 @@ public interface RetrofitInterface {
     @POST("/online")
     Call<List<UserInfo>> executeOnline();
 
+    @POST("/userinfo")
+    Call<UserInfo> executeUserinfo(@Body HashMap<String, String> map);
+
 
 
 }

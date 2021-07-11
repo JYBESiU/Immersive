@@ -1,13 +1,17 @@
 package com.example.thekaist.ui.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.thekaist.FrontActivity;
+import com.example.thekaist.GameActivity;
 import com.example.thekaist.LoginResult;
+import com.example.thekaist.MainActivity;
 import com.example.thekaist.R;
 import com.example.thekaist.RetrofitInterface;
 import com.example.thekaist.UserInfo;
@@ -35,7 +39,7 @@ public class SettingFragment extends Fragment {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.171:443";
+    private String BASE_URL = MainActivity.BASE_URL;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +60,18 @@ public class SettingFragment extends Fragment {
         profile_change = root.findViewById(R.id.change);
         profile_history = root.findViewById(R.id.history);
         develop = root.findViewById(R.id.developer);
+
+        Button testButton = root.findViewById(R.id.gametest);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GameActivity.class);
+                intent.putExtra("ask", "test1");
+                intent.putExtra("accept", "test2");
+
+                startActivity(intent);
+            }
+        });
 
         user_name = FrontActivity.name;
         user_id = FrontActivity.id;

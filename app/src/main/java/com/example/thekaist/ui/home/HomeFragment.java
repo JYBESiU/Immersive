@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.152:443";
+    private String BASE_URL = MainActivity.BASE_URL;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,

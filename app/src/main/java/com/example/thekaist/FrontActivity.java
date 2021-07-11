@@ -36,7 +36,7 @@ public class FrontActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.249.18.152:443";
+    private String BASE_URL = MainActivity.BASE_URL;
 
     public static Socket mSocket;
 
@@ -122,12 +122,12 @@ public class FrontActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mSocket.emit("acceptGame", ask, accept);
-
-                        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-                        intent.putExtra("ask", args[0].toString());
-                        intent.putExtra("accept", args[1].toString());
-
-                        startActivity(intent);
+//
+//                        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+//                        intent.putExtra("ask", args[0].toString());
+//                        intent.putExtra("accept", args[1].toString());
+//
+//                        startActivity(intent);
                     }
                 });
 

@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="Enter name"
-        android:id="@+id/nameEdit" />
+        android:id="@+id/nameEdit"
+        android:textColor="@color/whitegray"
+        android:textCursorDrawable="@null"
+        android:backgroundTint="@color/whitegray"
+        android:textColorHint="@color/whitegray"/>
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:hint="Enter email"
-        android:id="@+id/emailEdit" />
+        android:hint="Enter ID"
+        android:id="@+id/emailEdit"
+        android:textColor="@color/whitegray"
+        android:textCursorDrawable="@null"
+        android:backgroundTint="@color/whitegray"
+        android:textColorHint="@color/whitegray"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -23,13 +33,19 @@
         android:layout_margin="8dp"
         android:hint="Enter password"
         android:id="@+id/passwordEdit"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="@color/whitegray"
+        android:textCursorDrawable="@null"
+        android:backgroundTint="@color/whitegray"
+        android:textColorHint="@color/whitegray"/>
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="4dp"
         android:text="Sign up"
-        android:id="@+id/signup" />
+        android:id="@+id/signup"
+        android:background="@drawable/round_back"
+        android:textStyle="bold"/>
 
 </LinearLayout>

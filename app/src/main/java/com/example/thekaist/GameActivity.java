@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -111,6 +112,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         hSocket.on("enterroom", enterroom);
+        hSocket.on("randomCard", randomCard);
     }
 
     @Override
@@ -124,6 +126,14 @@ public class GameActivity extends AppCompatActivity {
 
     private void speak() {
     }
+
+    public Emitter.Listener randomCard = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            String data = args[0].toString();
+            Log.d("data", ""+data);
+        }
+    };
 
     public Emitter.Listener enterroom = new Emitter.Listener() {
         @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -27,6 +29,9 @@ import androidx.navigation.ui.NavigationUI;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -41,14 +46,16 @@ public class FrontActivity extends AppCompatActivity {
     public static Socket mSocket;
 
     private Context activity = this;
+    int flag = 0;
 
-    public static String name;
     public static String id;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         retrofit = new Retrofit.Builder()
@@ -66,7 +73,6 @@ public class FrontActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        name = intent.getStringExtra("name");
         id = intent.getStringExtra("id");
 
 
@@ -154,5 +160,49 @@ public class FrontActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    private long time= 0;
+
+    @Override
+    public void onBackPressed(){
+
+
+        if(System.currentTimeMillis() - time >= 2000){
+            time=System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(),"한번더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(System.currentTimeMillis() - time < 2000 ){
+            HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
+
+            map.put("id", id);
+
+            Call<Void> call = retrofitInterface.executeLogout(map);//로그인리절트 클래스 부르는데저 map넣어서 함
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.code() == 200){
+                        Log.d("look", "changed");
+                        flag = 1;
+                        finish();
+
+                    }
+                    else if(response.code()==404){
+                        Log.d("look", "not changed");
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                }
+
+            });
+
+        }
+    }
 
 }

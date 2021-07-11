@@ -6,6 +6,33 @@ public class UserInfo {
     private String id;
     private String password;
     private String online;
+    private String imgnumber;
+    private Integer win;
+    private Integer lose;
+
+    public Integer getWin() {
+        return win;
+    }
+
+    public void setWin(Integer win) {
+        this.win = win;
+    }
+
+    public Integer getLose() {
+        return lose;
+    }
+
+    public void setLose(Integer lose) {
+        this.lose = lose;
+    }
+
+    public String getImgnumber() {
+        return imgnumber;
+    }
+
+    public void setImgnumber(String imgnumber) {
+        this.imgnumber = imgnumber;
+    }
 
     public String getPassword() {
         return password;

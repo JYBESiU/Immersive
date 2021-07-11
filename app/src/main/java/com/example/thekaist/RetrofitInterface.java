@@ -23,4 +23,12 @@ public interface RetrofitInterface {
     @POST("/userinfo")
     Call<UserInfo> executeUserinfo(@Body HashMap<String, String> map);
 
+    @POST("/change")
+    Call<Void> executeChange(@Body HashMap<String, String> map);
+
+    @POST("/logout")
+    Call<Void> executeLogout(@Body HashMap<String, String> map);
+
+    @POST("/rank")
+    Call<List<UserInfo>> executeRank();
 }

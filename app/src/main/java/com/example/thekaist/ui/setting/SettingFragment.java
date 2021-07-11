@@ -1,11 +1,13 @@
 package com.example.thekaist.ui.setting;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thekaist.FrontActivity;
@@ -15,6 +17,7 @@ import com.example.thekaist.MainActivity;
 import com.example.thekaist.R;
 import com.example.thekaist.RetrofitInterface;
 import com.example.thekaist.UserInfo;
+import com.example.thekaist.changeUserinfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +37,10 @@ public class SettingFragment extends Fragment {
 
     private SettingViewModel settingViewModel;
     private TextView profile_name, profile_id, profile_change, profile_history, develop;
-    public String user_name, user_id;
+    private ImageView img;
+
+    public String id = FrontActivity.id;
+    public String name, imgnum, pwd;
 
 
     private Retrofit retrofit;
@@ -60,6 +66,7 @@ public class SettingFragment extends Fragment {
         profile_change = root.findViewById(R.id.change);
         profile_history = root.findViewById(R.id.history);
         develop = root.findViewById(R.id.developer);
+        img = root.findViewById(R.id.User_pic);
 
         Button testButton = root.findViewById(R.id.gametest);
         testButton.setOnClickListener(new View.OnClickListener() {
@@ -73,11 +80,10 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        user_name = FrontActivity.name;
-        user_id = FrontActivity.id;
+        init();
 
-        profile_name.setText(user_name);
-        profile_id.setText(user_id);
+        profile_id.setText(id);
+        profile_name.setText(name);
 
         
         profile_change.setOnClickListener(new View.OnClickListener() {
@@ -101,10 +107,19 @@ public class SettingFragment extends Fragment {
     }
 
     private void change() {
+        Intent intent = new Intent(getContext(), changeUserinfo.class);
+        intent.putExtra("name", name);
+        intent.putExtra("password", pwd);
+        intent.putExtra("imgnum", imgnum);
+        intent.putExtra("id", id);
+        startActivity(intent);
+
+    }
+
+    private void init(){
         HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
 
-        map.put("name", user_name);
-        map.put("id", user_id);
+        map.put("id", id);
 
         Call<UserInfo> call = retrofitInterface.executeUserinfo(map);//로그인리절트 클래스 부르는데저 map넣어서 함
 
@@ -114,7 +129,33 @@ public class SettingFragment extends Fragment {
                 if(response.code() == 200){
                     UserInfo result = response.body();//응답의 내용. 이와같은 디비구조인게 loginresult.
 
-                    
+                    name = result.getName();
+                    profile_name.setText(name);
+
+                    pwd = result.getPassword();
+                    imgnum = result.getImgnumber();
+
+                    switch(imgnum){
+                        case "1":
+                            img.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.character1));
+                            break;
+
+
+                        case "2":
+                            img.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.character2));
+                            break;
+
+                        case "3":
+                            img.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.character3));
+
+                            break;
+
+                        case "4":
+                            img.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.character4));
+
+                            break;
+                    }
+
                 }
             }
 

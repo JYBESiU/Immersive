@@ -202,10 +202,13 @@ public class HomeFragment extends Fragment {
 
                     for(int i=0;i<resultList.size();i++) {
                         UserInfo result = resultList.get(i);
-                        online_player item = new online_player(result.getName(), result.getId());
+                        if(!result.getId().equals(id)){
+                            online_player item = new online_player(result.getName(), result.getId());
 
-                        onlist.add(item);
-                        Log.d("look", ""+onlist.size()+" and "+item.getId());
+                            onlist.add(item);
+                            Log.d("look", ""+onlist.size()+" and "+item.getId());
+                        }
+
 
                     }
 

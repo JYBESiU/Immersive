@@ -8,6 +8,10 @@
     <color name="buttoncolor">#c3b194</color>
     <color name="lightred">#6A0D1A</color>
     <color name="brown">#764f28</color>
-
-
+    <color name="buzzerred">#CD0505</color>
+    <color name="buzzertrans">#4DCD0505</color>
+    <color name="buzzerno">#8C8C8C</color>
+    <color name="passtrans">#4D79D97C</color>
+    <color name="passon">#79D97C</color>
+>>>>>>> jy
 </resources>

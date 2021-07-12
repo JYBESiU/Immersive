@@ -6,4 +6,9 @@
     <color name="white">#FFFFFF</color>
     <color name="whitegray">#EEEEEE</color>
     <color name="buttoncolor">#8C6E3C</color>
+    <color name="buzzerred">#CD0505</color>
+    <color name="buzzertrans">#4DCD0505</color>
+    <color name="buzzerno">#8C8C8C</color>
+    <color name="passtrans">#4D79D97C</color>
+    <color name="passon">#79D97C</color>
 </resources>

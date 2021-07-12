@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -103,19 +105,11 @@ public class GameActivity extends AppCompatActivity {
         cardsAdapter.setOnItemClickListener(new CardsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                hSocket.emit("click", room, position);
                 selects.add(nums_order.get(position));
+                hSocket.emit("click", room, position, selects.size(), id);
+
+
                 // 같은 숫자 중복 금지 추가
-                if (selects.size() == 3) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    // 누른 사람 3번째 클릭에 안보이는 것 수정
-                    hSocket.emit("turnOver", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr);
-                    selects = new ArrayList<Integer>();
-                }
             }
         });
         recyclerView.setAdapter(cardsAdapter);
@@ -172,6 +166,18 @@ public class GameActivity extends AppCompatActivity {
                int pos = (int) args[0];
                image_list.set(pos, nums_list.get(nums_order.get(pos)));
                cardsAdapter.notifyItemChanged(pos);
+
+               if ((int) args[1] == 3 && args[2].toString().equals(id)) {
+                    TimerTask task = new TimerTask() {
+                        public void run () {
+                            hSocket.emit("turnOver", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr);
+                            selects = new ArrayList<Integer>();
+                        }
+                    };
+
+                    Timer timer = new Timer();
+                    timer.schedule(task, 1000);
+               }
            });
         }
     };
@@ -216,6 +222,9 @@ public class GameActivity extends AppCompatActivity {
                 targetString = args[0].toString();
                 targetNum = Integer.parseInt(args[1].toString());
                 target.setText(Integer.toString(targetNum));
+
+                ask_scr = (int) args[2];
+                accept_scr = (int) args[3];
             });
         }
     };
@@ -230,7 +239,11 @@ public class GameActivity extends AppCompatActivity {
                 }
                 cardsAdapter.notifyDataSetChanged();
 
-//                hSocket.emit("endRound");
+                ask_scr = (int) args[0];
+                accept_scr = (int) args[1];
+                ply1scr.setText(Integer.toString(ask_scr));
+                ply2scr.setText(Integer.toString(accept_scr));
+                hSocket.emit("endRound", room, ask_scr, accept_scr);
             });
         }
     };

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:padding="5dp"
     tools:context=".changeUserinfo">
 
     <TextView
@@ -77,25 +77,25 @@
         android:columnCount="2">
 
         <ImageView
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:id="@+id/Img1"
             android:src="@drawable/character1"/>
 
         <ImageView
             android:id="@+id/Img2"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:src="@drawable/character2"/>
         <ImageView
             android:id="@+id/Img3"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:src="@drawable/character3"/>
         <ImageView
             android:id="@+id/Img4"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:src="@drawable/character4"/>
 
     </GridLayout>
@@ -103,6 +103,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/btns"
         app:layout_constraintBottom_toBottomOf="parent"
         >
 

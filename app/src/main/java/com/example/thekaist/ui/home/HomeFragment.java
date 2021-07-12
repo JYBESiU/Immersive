@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
     FrontActivity frontActivity = (FrontActivity)getActivity();
     Socket hSocket;
     String id = FrontActivity.id;
+    private String oppo;
 
 
     private HomeViewModel homeViewModel;
@@ -94,7 +95,6 @@ public class HomeFragment extends Fragment {
 //        editText = root.findViewById(R.id.accept_id);
 //        button = root.findViewById(R.id.ask_button);
 
-        op = root.findViewById(R.id.opponent);
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment {
 
 
     private void connectRequest() {
-        hSocket.emit("battle", gson.toJson(new Battle(id, op.getText().toString())));
+        hSocket.emit("battle", gson.toJson(new Battle(id, oppo)));
     }
 
     private void getOnline() {
@@ -220,7 +220,8 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void onItemClick(int position) {
                             Log.d("look", ""+onlist.get(position).getId());
-                            op.setText(onlist.get(position).getId());
+                            oppo = onlist.get(position).getId();
+                            req.setText(oppo+"에게 게임 요청");
                         }
                     });
 

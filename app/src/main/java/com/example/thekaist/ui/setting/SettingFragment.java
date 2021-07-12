@@ -40,7 +40,8 @@ public class SettingFragment extends Fragment {
     private ImageView img;
 
     public String id = FrontActivity.id;
-    public String name, imgnum, pwd;
+    public String imgnum, pwd;
+    public static String name;
 
 
     private Retrofit retrofit;

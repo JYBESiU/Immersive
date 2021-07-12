@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
+    android:padding="5dp"
     tools:context=".ui.setting.SettingFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:paddingTop="30dp"
+        android:paddingTop="20dp"
         android:layout_marginLeft="15sp"
         android:layout_marginRight="5sp"
         android:orientation="horizontal"
@@ -71,12 +72,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/history"
-            android:textSize="35sp"
+            android:textSize="27sp"
             android:textStyle="bold"
             android:text="플레이 기록"
             android:gravity="center"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="5sp"/>
+            android:layout_margin="10dp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -91,13 +91,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="35sp"
+            android:textSize="27sp"
             android:textStyle="bold"
             android:text="프로필 변경"
             android:gravity="center"
             android:id="@+id/change"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="5sp"/>
+            android:layout_margin="10dp"
+            />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -113,12 +113,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/developer"
-            android:textSize="35sp"
+            android:textSize="27sp"
             android:textStyle="bold"
             android:text="게임 설명"
             android:gravity="center"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="5sp"/>
+            android:layout_margin="10dp"
+            />
     </androidx.cardview.widget.CardView>
 
     <Button

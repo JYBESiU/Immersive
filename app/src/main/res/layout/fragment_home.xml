@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/swipe_home"
+    android:padding="5dp"
+
     tools:context=".ui.home.HomeFragment"
     android:background="@color/whitegray">
 
@@ -41,17 +43,6 @@
 
         </LinearLayout>
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/opponent"
-            android:text="요청 상대"
-            app:layout_constraintBottom_toTopOf="@+id/request"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,8 +50,12 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:id="@+id/request"
+            android:gravity="center"
             android:background="@color/buttoncolor"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+        </Button>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

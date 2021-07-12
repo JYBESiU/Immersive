@@ -31,4 +31,7 @@ public interface RetrofitInterface {
 
     @POST("/rank")
     Call<List<UserInfo>> executeRank();
+
+    @POST("/makebattle")
+    Call<Void> executeBattlestart(@Body HashMap<String, String> map);
 }

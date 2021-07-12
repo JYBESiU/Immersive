@@ -10,13 +10,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.thekaist.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -156,6 +159,53 @@ public class FrontActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             intent.putExtra("ask", args[0].toString());
             intent.putExtra("accept", args[1].toString());
+
+            HashMap<String, String> map = new HashMap<>();
+
+            map.put("ask", args[0].toString());
+            map.put("accept", args[1].toString());
+            Call<Void> call = retrofitInterface.executeBattlestart(map);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.code()==200){
+                        Log.d("battle", "succeed");
+                    }
+                    else if(response.code()==404){
+                        
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                }
+            });
+
+
+            JSONArray jsonArray1 = (JSONArray) args[2];
+            ArrayList<Integer> list1 = new ArrayList<Integer>();
+            for (int i = 0; i < jsonArray1.length(); i++) {
+                try {
+                    list1.add(jsonArray1.getInt(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            JSONArray jsonArray2 = (JSONArray) args[3];
+            ArrayList<Integer> list2 = new ArrayList<Integer>();
+            for (int i = 0; i < jsonArray2.length(); i++) {
+                try {
+                    list2.add(jsonArray1.getInt(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            intent.putExtra("cards_order", list1);
+            intent.putExtra("nums_order", list2);
 
             startActivity(intent);
         }

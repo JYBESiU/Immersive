@@ -28,6 +28,7 @@
             android:textStyle="bold"
             android:textSize="26sp"
             android:layout_weight="1"
+            android:textColor="@color/whitegray"
             android:layout_marginStart="20sp"
             android:text="Name"/>
 
@@ -39,6 +40,8 @@
             android:layout_marginEnd="20sp"
             android:gravity="end"
             android:layout_weight="1"
+            android:textColor="@color/whitegray"
+
 
             android:text="ID"/>
 

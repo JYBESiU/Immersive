@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.thekaist.R;
 import com.example.thekaist.UserInfo;
 import com.example.thekaist.online_player;
@@ -67,6 +68,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             case "4":
                 holder.user_img.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.character4));
                 break;
+            default:
+                Glide.with(context).load(mList.get(position).getImgnumber()).into(holder.user_img);
+
         }
         holder.user_name.setText(mList.get(position).getName());
         holder.user_record.setText(mList.get(position).getWin()+"승 "+mList.get(position).getLose()+"패");

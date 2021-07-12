@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.HashMap;
 
 import android.widget.Toast;
@@ -198,20 +199,21 @@ public class HomeFragment extends Fragment {
                 if (response.code() == 200) {
 
                     List<UserInfo> resultList = response.body();
-                    Log.d("look", ""+resultList.get(0).getName()+" and "+resultList.size());
 
                     for(int i=0;i<resultList.size();i++) {
                         UserInfo result = resultList.get(i);
                         if(!result.getId().equals(id)){
-                            online_player item = new online_player(result.getName(), result.getId());
+                            online_player item = new online_player(result.getName(), result.getId(), result.getOnline());
 
                             onlist.add(item);
                             Log.d("look", ""+onlist.size()+" and "+item.getId());
                         }
 
 
+
                     }
 
+                    Collections.reverse(onlist);
                     OnlineAdapter adapter = new OnlineAdapter(getContext(), onlist);
                     Log.d("look", ""+onlist.size());
                     recyclerView.setAdapter(adapter);
@@ -221,7 +223,7 @@ public class HomeFragment extends Fragment {
                         public void onItemClick(int position) {
                             Log.d("look", ""+onlist.get(position).getId());
                             oppo = onlist.get(position).getId();
-                            req.setText(oppo+"에게 게임 요청");
+                            req.setText(onlist.get(position).getName()+"에게 게임 요청");
                         }
                     });
 

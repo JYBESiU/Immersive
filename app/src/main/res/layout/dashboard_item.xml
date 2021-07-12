@@ -20,8 +20,8 @@
 
             <ImageView
                 android:id="@+id/user_img"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 />
 
@@ -35,7 +35,7 @@
                     android:id="@+id/user_name"
                     android:text="ID"
                     android:textStyle="bold"
-                    android:textSize="25sp"
+                    android:textSize="18sp"
                     android:textColor="@color/whitegray"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -43,9 +43,9 @@
                 <TextView
                     android:id="@+id/user_record"
                     android:text="Win"
-                    android:textSize="22sp"
+                    android:textSize="15sp"
                     android:textColor="@color/whitegray"
-
+                    android:paddingTop="3dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />

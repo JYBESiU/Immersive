@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -45,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
     Socket hSocket;
     String name;
     String id;
+    String whosTurn;
 
     private String BASE_URL = MainActivity.BASE_URL;
 
@@ -58,6 +61,7 @@ public class GameActivity extends AppCompatActivity {
 
     int targetNum ;
     String targetString;
+    boolean card_clickable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,7 @@ public class GameActivity extends AppCompatActivity {
         pass = findViewById(R.id.pass);
 
         recyclerView = findViewById(R.id.show_cards);
+        recyclerView.setClickable(false);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4) {
             @Override
             public boolean canScrollVertically() {
@@ -103,18 +108,12 @@ public class GameActivity extends AppCompatActivity {
         cardsAdapter.setOnItemClickListener(new CardsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                hSocket.emit("click", room, position);
-                selects.add(nums_order.get(position));
-                // 같은 숫자 중복 금지 추가
-                if (selects.size() == 3) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    // 누른 사람 3번째 클릭에 안보이는 것 수정
-                    hSocket.emit("turnOver", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr);
-                    selects = new ArrayList<Integer>();
+                if (!card_clickable) return;
+                if (selects.contains(nums_order.get(position))) {
+                    Toast.makeText(getApplicationContext(), "Don't click same card!", Toast.LENGTH_SHORT).show();
+                } else {
+                    selects.add(nums_order.get(position));
+                    hSocket.emit("click", room, position, selects.size(), id);
                 }
             }
         });
@@ -123,19 +122,24 @@ public class GameActivity extends AppCompatActivity {
         buzzer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                speak();
+                buzzer.setBackgroundColor(getResources().getColor(R.color.buzzerred));
+                whosTurn = id;
+                hSocket.emit("startTurn", room, id);
+                card_clickable = true;
+                buzzer.setEnabled(false);
             }
         });
 
         pass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sayPass();
+                pass.setBackgroundColor(getResources().getColor(R.color.passon));
+                pass.setEnabled(false);
+                card_clickable = false;
+                hSocket.emit("passTurn", room, ask_scr, accept_scr);
             }
         });
         hSocket = FrontActivity.mSocket;
-
-        hSocket.on("randomCard", randomCard);
 
         hSocket.on("opponentClick", opponentClick);
         hSocket.on("startShow", startShow);
@@ -143,6 +147,9 @@ public class GameActivity extends AppCompatActivity {
         hSocket.on("startRound", startRound);
         hSocket.on("correct", correct);
         hSocket.on("wrong", wrong);
+        hSocket.on("opponentTurn", opponentTurn);
+        hSocket.on("win", win);
+        hSocket.on("lose", lose);
     }
 
     @Override
@@ -151,20 +158,6 @@ public class GameActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void sayPass() {
-    }
-
-    private void speak() {
-    }
-
-    public Emitter.Listener randomCard = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            String data = args[0].toString();
-            Log.d("data", ""+data);
-        }
-    };
-
     public Emitter.Listener opponentClick = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
@@ -172,7 +165,32 @@ public class GameActivity extends AppCompatActivity {
                int pos = (int) args[0];
                image_list.set(pos, nums_list.get(nums_order.get(pos)));
                cardsAdapter.notifyItemChanged(pos);
+
+               if ((int) args[1] == 3 && args[2].toString().equals(id)) {
+                    TimerTask task = new TimerTask() {
+                        public void run () {
+                            hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr);
+                            selects = new ArrayList<Integer>();
+                        }
+                    };
+
+                    Timer timer = new Timer();
+                    timer.schedule(task, 1000);
+               }
            });
+        }
+    };
+
+    public Emitter.Listener opponentTurn = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(() -> {
+                buzzer.setBackgroundColor(getResources().getColor(R.color.buzzerno));
+                buzzer.setEnabled(false);
+                buzzer.setImageResource(R.drawable.ic_baseline_not_interested_24);
+                whosTurn = args[0].toString();
+                card_clickable = false;
+            });
         }
     };
 
@@ -187,7 +205,7 @@ public class GameActivity extends AppCompatActivity {
                 cardsAdapter.notifyDataSetChanged();
 
                 target.setTextSize(20);
-                target.setText("Show for 5 seconds");
+                target.setText("Show for 10 seconds");
             });
         }
     };
@@ -202,7 +220,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 cardsAdapter.notifyDataSetChanged();
 
-                target.setTextSize(40);
+                target.setTextSize(35);
                 target.setText("Game Start");
             });
         }
@@ -215,7 +233,18 @@ public class GameActivity extends AppCompatActivity {
                 target.setText(" ");
                 targetString = args[0].toString();
                 targetNum = Integer.parseInt(args[1].toString());
+                target.setTextSize(40);
                 target.setText(Integer.toString(targetNum));
+
+                ask_scr = (int) args[2];
+                accept_scr = (int) args[3];
+
+                buzzer.setEnabled(true);
+                buzzer.setBackgroundColor(getResources().getColor(R.color.buzzertrans));
+                buzzer.setImageResource(R.drawable.push_img);
+
+                pass.setEnabled(true);
+                pass.setBackgroundColor(getResources().getColor(R.color.passtrans));
             });
         }
     };
@@ -230,7 +259,11 @@ public class GameActivity extends AppCompatActivity {
                 }
                 cardsAdapter.notifyDataSetChanged();
 
-//                hSocket.emit("endRound");
+                ask_scr = (int) args[0];
+                accept_scr = (int) args[1];
+                ply1scr.setText(Integer.toString(ask_scr));
+                ply2scr.setText(Integer.toString(accept_scr));
+                hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr);
             });
         }
     };
@@ -244,11 +277,37 @@ public class GameActivity extends AppCompatActivity {
                     image_list.add(cards_list.get(cards_order.get(i)));
                 }
                 cardsAdapter.notifyDataSetChanged();
+                if (!whosTurn.equals(id))
+                    buzzer.setEnabled(true);
+                buzzer.setBackgroundColor(getResources().getColor(R.color.buzzertrans));
+                buzzer.setImageResource(R.drawable.push_img);
+                card_clickable = false;
+            });
+        }
+    };
 
+
+    public Emitter.Listener win = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(() -> {
 
             });
         }
     };
+
+    public Emitter.Listener lose = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(() -> {
+
+            });
+        }
+    };
+
+
+
+
 
     public void makeImageList() {
         this.cards_list.add(this.getResources().getDrawable(R.drawable.card1));

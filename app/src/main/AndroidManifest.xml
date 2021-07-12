@@ -14,7 +14,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".SubActivity"></activity>
+
         <activity android:name=".AccessHistory" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".FrontActivity" />
+
         <activity android:name=".GameActivity" />
+
         <activity android:name=".changeUserinfo" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

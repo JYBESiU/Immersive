@@ -20,6 +20,9 @@ public interface RetrofitInterface {
     @POST("/online")
     Call<List<UserInfo>> executeOnline();
 
+    @POST("/changeplay")
+    Call<Void> executeChangePlay(@Body HashMap<String, String> map);
+
     @POST("/userinfo")
     Call<UserInfo> executeUserinfo(@Body HashMap<String, String> map);
 
@@ -32,6 +35,8 @@ public interface RetrofitInterface {
     @POST("/rank")
     Call<List<UserInfo>> executeRank();
 
+    @POST("/signupkakao")
+    Call<Void> executeKakaosignup(@Body HashMap<String, String> map);
 
     @POST("/getbattle")
     Call<List<battleinfo>> executeHistory(@Body HashMap<String, String> map);

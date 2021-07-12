@@ -58,7 +58,12 @@ public class OnlineAdapter extends RecyclerView.Adapter<OnlineAdapter.ViewHolder
         TextView name, id;
 
         holder.view_name.setText(mList.get(position).getName());
-        holder.view_id.setText("ID  "+mList.get(position).getId());
+        if(mList.get(position).getId().equals("true")){
+            holder.view_id.setText("대기 중");
+        }
+        if(mList.get(position).getId().equals("playing")){
+            holder.view_id.setText("게임 중");
+        }
 
 
 

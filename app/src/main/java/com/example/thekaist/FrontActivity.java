@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.thekaist.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kakao.auth.Session;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,6 +78,41 @@ public class FrontActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        String name = intent.getStringExtra("name");
+        String imgnumber = intent.getStringExtra("imgnumber");
+
+
+        if(!imgnumber.equals("")){
+            HashMap<String, String> map = new HashMap<>();
+
+            map.put("name", name);
+            map.put("id", id);
+            map.put("imgnumber", imgnumber);
+
+            Call<Void> call = retrofitInterface.executeKakaosignup(map);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    if (response.code() == 200) {
+                        Log.d("kakao", "200");
+
+                    } else if (response.code() == 400) {
+
+                        Log.d("kakao", "400");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(FrontActivity.this, t.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -160,18 +196,17 @@ public class FrontActivity extends AppCompatActivity {
             intent.putExtra("ask", args[0].toString());
             intent.putExtra("accept", args[1].toString());
 
-            /*
+
             HashMap<String, String> map = new HashMap<>();
 
-            map.put("ask", args[0].toString());
-            map.put("accept", args[1].toString());
-            Call<Void> call = retrofitInterface.executeBattlestart(map);
+            map.put("id", id);
+            Call<Void> call = retrofitInterface.executeChangePlay(map);
 
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if(response.code()==200){
-                        Log.d("battle", "succeed");
+                        Log.d("playing", "succeed");
                     }
                     else if(response.code()==404){
                         
@@ -184,7 +219,7 @@ public class FrontActivity extends AppCompatActivity {
                 }
             });
 
-             */
+
 
 
             JSONArray jsonArray1 = (JSONArray) args[2];

@@ -1,12 +1,24 @@
 package com.example.thekaist;
 
-public class online_player {
+import android.app.Application;
+
+public class online_player implements Comparable<online_player>{
     private String name;
     private String id;
+    private String online;
 
-    public online_player(String name, String id) {
+    public String getOnline() {
+        return online;
+    }
+
+    public void setOnline(String online) {
+        this.online = online;
+    }
+
+    public online_player(String name, String id, String online) {
         this.name = name;
         this.id = id;
+        this.online = online;
     }
 
     public String getName() {
@@ -23,5 +35,11 @@ public class online_player {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(online_player o) {
+        return this.online.compareTo(o.online);
+
     }
 }

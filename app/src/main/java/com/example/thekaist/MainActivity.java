@@ -1,5 +1,6 @@
 package com.example.thekaist;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +21,7 @@ import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "사용자";
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    public static String BASE_URL = "http://192.249.18.152:443";
+    public static String BASE_URL = "http://192.249.18.152:80";
     private ISessionCallback mSessionCallback;
 
 
@@ -76,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         mSessionCallback = new ISessionCallback() {
             @Override
             public void onSessionOpened() {
@@ -98,13 +102,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(MeV2Response result) {
 
-                        Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
                         intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
-                        intent.putExtra("name", result.getKakaoAccount().getProfile().getProfileImageUrl());
-                        intent.putExtra("name", result.getKakaoAccount().getEmail());
-                        startActivity(intent);
+                        intent.putExtra("id", result.getKakaoAccount().getEmail());
+                        intent.putExtra("imgnumber", result.getKakaoAccount().getProfile().getProfileImageUrl());
 
-                        Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_SHORT).show();
+
+                        startActivity(intent);
 
                     }
                 });
@@ -157,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), FrontActivity.class);
                             intent.putExtra("name", result.getName());
                             intent.putExtra("id", result.getId());
+                            intent.putExtra("imgnumber", "");
 
 
                             startActivity(intent);
@@ -254,5 +259,17 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)){
+            super.onActivityResult(requestCode, resultCode, data);
+        }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(mSessionCallback);
+    }
 }

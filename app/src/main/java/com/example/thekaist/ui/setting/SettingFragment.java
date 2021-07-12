@@ -2,7 +2,9 @@ package com.example.thekaist.ui.setting;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.thekaist.AccessHistory;
 import com.example.thekaist.FrontActivity;
 import com.example.thekaist.GameActivity;
@@ -19,6 +22,8 @@ import com.example.thekaist.R;
 import com.example.thekaist.RetrofitInterface;
 import com.example.thekaist.UserInfo;
 import com.example.thekaist.changeUserinfo;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +42,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SettingFragment extends Fragment {
 
     private SettingViewModel settingViewModel;
-    private TextView profile_name, profile_id, profile_change, profile_history, develop;
+    private TextView profile_name, profile_id, profile_change, profile_history, develop, logout;
     private ImageView img;
 
     public String id = FrontActivity.id;
@@ -68,19 +73,9 @@ public class SettingFragment extends Fragment {
         profile_change = root.findViewById(R.id.change);
         profile_history = root.findViewById(R.id.history);
         develop = root.findViewById(R.id.developer);
+        logout = root.findViewById(R.id.logout);
         img = root.findViewById(R.id.User_pic);
 
-        Button testButton = root.findViewById(R.id.gametest);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameActivity.class);
-                intent.putExtra("ask", "test1");
-                intent.putExtra("accept", "test2");
-
-                startActivity(intent);
-            }
-        });
 
         init();
 
@@ -99,6 +94,46 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 history();
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+                    @Override
+                    public void onCompleteLogout() {
+
+                        HashMap<String, String> map = new HashMap<>();//key도 스트링, 값도 스트링
+
+                        map.put("id", id);
+
+                        Call<Void> call = retrofitInterface.executeLogout(map);//로그인리절트 클래스 부르는데저 map넣어서 함
+
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.code() == 200){
+                                    Log.d("look", "changed");
+                                    getActivity().finish();
+
+                                }
+                                else if(response.code()==404){
+                                    Log.d("look", "not changed");
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+
+                        });
+
+                    }
+                });
             }
         });
         
@@ -159,6 +194,8 @@ public class SettingFragment extends Fragment {
                             img.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.character4));
 
                             break;
+                        default:
+                            Glide.with(getActivity()).load(imgnum).into(img);
                     }
 
                 }

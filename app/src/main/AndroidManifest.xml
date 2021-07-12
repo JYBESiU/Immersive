@@ -10,6 +10,7 @@
         android:icon="@drawable/applogo1"
         android:label="@string/app_name"
         android:roundIcon="@drawable/applogo1"
+
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
@@ -18,6 +19,7 @@
         <activity android:name=".AccessHistory" />
 
         <activity android:name=".MainActivity">
+            android:configChanges="orientation|screenSize"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

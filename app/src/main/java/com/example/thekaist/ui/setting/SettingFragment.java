@@ -70,18 +70,6 @@ public class SettingFragment extends Fragment {
         develop = root.findViewById(R.id.developer);
         img = root.findViewById(R.id.User_pic);
 
-        Button testButton = root.findViewById(R.id.gametest);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GameActivity.class);
-                intent.putExtra("ask", "test1");
-                intent.putExtra("accept", "test2");
-
-                startActivity(intent);
-            }
-        });
-
         init();
 
         profile_id.setText("ID  "+id);

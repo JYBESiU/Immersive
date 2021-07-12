@@ -1,6 +1,6 @@
 package com.example.thekaist;
 
-public class UserInfo {
+public class UserInfo implements Comparable<UserInfo>{
 
     private String name;
     private String id;
@@ -64,5 +64,10 @@ public class UserInfo {
 
     public void setOnline(String online) {
         this.online = online;
+    }
+
+    @Override
+    public int compareTo(UserInfo o) {
+        return this.win.compareTo(o.win);
     }
 }

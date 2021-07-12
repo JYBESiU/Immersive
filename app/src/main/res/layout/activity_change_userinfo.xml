@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
+    android:background="@color/colorPrimaryDark"
     tools:context=".changeUserinfo">
 
     <TextView
@@ -14,12 +15,17 @@
         android:id="@+id/UserName"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:paddingTop="20dp"
+        android:textColor="@color/whitegray"
         tools:ignore="MissingConstraints" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/changeName"
+        android:textColor="@color/buttoncolor"
+        android:backgroundTint="@color/whitegray"
+        android:textColorHint="@color/whitegray"
         app:layout_constraintTop_toBottomOf="@+id/UserName"
         android:hint="원래 이름"
         android:gravity="center"
@@ -30,6 +36,8 @@
         android:layout_height="wrap_content"
         android:text="비밀번호"
         android:id="@+id/UserPwd"
+        android:textColor="@color/whitegray"
+
         app:layout_constraintTop_toBottomOf="@+id/changeName"
         android:layout_marginTop="15dp"
         android:textSize="20sp"
@@ -41,7 +49,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/changePwd"
         android:gravity="center"
-
+        android:textColor="@color/buttoncolor"
+        android:backgroundTint="@color/whitegray"
+        android:textColorHint="@color/whitegray"
         app:layout_constraintTop_toBottomOf="@+id/UserPwd"
         android:hint="원래 비번"
         android:textSize="25sp"/>
@@ -51,6 +61,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/UserPic"
         android:text="사용자 사진"
+        android:textColor="@color/whitegray"
+
         app:layout_constraintTop_toBottomOf="@+id/changePwd"
         android:layout_marginTop="15dp"
         android:textSize="20sp"
@@ -61,7 +73,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/changeImg"
         android:gravity="center"
-
+        android:backgroundTint="@color/whitegray"
+        android:textColorHint="@color/whitegray"
+        android:textColor="@color/buttoncolor"
         app:layout_constraintTop_toBottomOf="@+id/UserPic"
         android:hint="원래 이미지"
         android:textSize="25sp"/>
@@ -112,8 +126,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/save"
             android:text="저장"
+            android:background="@color/buttoncolor"
             android:gravity="center"
             android:layout_weight="1"
+            android:layout_marginEnd="5dp"
             />
 
 
@@ -122,6 +138,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/cancel"
             android:text="종료"
+            android:background="@color/buttoncolor"
+
             android:gravity="center"
             android:layout_weight="1"
             />

@@ -69,7 +69,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 break;
         }
         holder.user_name.setText(mList.get(position).getName());
-        holder.user_record.setText(mList.get(position).getWin().toString());
+        holder.user_record.setText(mList.get(position).getWin()+"승 "+mList.get(position).getLose()+"패");
 
     }
 

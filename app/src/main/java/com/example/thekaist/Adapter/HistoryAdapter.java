@@ -13,30 +13,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thekaist.R;
 import com.example.thekaist.UserInfo;
+import com.example.thekaist.history_item;
 
 import java.util.ArrayList;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
     static Context context;
-    private ArrayList<UserInfo> mList=null;
+    private ArrayList<history_item> mList=null;
 
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView game, scr1, scr2, opponent;
+        TextView game, scr1, scr2, opponent, vs;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             game = itemView.findViewById(R.id.Result);
             scr1 = itemView.findViewById(R.id.my_scr);
+            vs =itemView.findViewById(R.id.versus);
             scr2 = itemView.findViewById(R.id.oppo_scr);
             opponent = itemView.findViewById(R.id.oppo);
 
         }
     }
 
-    public HistoryAdapter(Context context, ArrayList<UserInfo> mlist) {
+    public HistoryAdapter(Context context, ArrayList<history_item> mlist) {
 
         this.context = context;
         this.mList = mlist;
@@ -56,8 +58,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        //holder.user_name.setText(mList.get(position).getName());
-        //holder.user_record.setText(mList.get(position).getWin().toString());
+
+        holder.game.setText(mList.get(position).getResult());
+        holder.scr1.setText(mList.get(position).getMyscr());
+        holder.scr2.setText(mList.get(position).getOpponentscr());
+        holder.opponent.setText("with "+mList.get(position).getOpponent());
 
     }
 

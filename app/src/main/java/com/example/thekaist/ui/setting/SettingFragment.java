@@ -84,7 +84,7 @@ public class SettingFragment extends Fragment {
 
         init();
 
-        profile_id.setText(id);
+        profile_id.setText("ID  "+id);
         profile_name.setText(name);
 
         

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryDark">
 
     <ImageView
         android:layout_width="250dp"
@@ -22,7 +22,7 @@
         android:id="@+id/login"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/signup"
-        android:background="@drawable/round_back"
+        android:background="@color/buttoncolor"
         android:scaleType="fitXY"
         android:textStyle="bold"/>
 
@@ -33,10 +33,23 @@
         android:id="@+id/signup"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:background="@drawable/round_back"
+        android:background="@color/buttoncolor"
         android:scaleType="fitXY"
         android:textStyle="bold"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="140dp"
+        android:layout_alignParentBottom="true"
+        />
+
+    <com.kakao.usermgmt.LoginButton
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:id="@+id/kakao_login"
+        android:src="@drawable/kakao_login_small"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:textStyle="bold"
+        android:layout_marginBottom="80dp"
         android:layout_alignParentBottom="true"/>
+
 
 </RelativeLayout>

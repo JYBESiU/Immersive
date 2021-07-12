@@ -160,6 +160,7 @@ public class FrontActivity extends AppCompatActivity {
             intent.putExtra("ask", args[0].toString());
             intent.putExtra("accept", args[1].toString());
 
+            /*
             HashMap<String, String> map = new HashMap<>();
 
             map.put("ask", args[0].toString());
@@ -182,6 +183,8 @@ public class FrontActivity extends AppCompatActivity {
 
                 }
             });
+
+             */
 
 
             JSONArray jsonArray1 = (JSONArray) args[2];

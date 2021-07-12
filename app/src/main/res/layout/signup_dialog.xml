@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryDark">
 
     <EditText
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
         android:layout_margin="4dp"
         android:text="Sign up"
         android:id="@+id/signup"
-        android:background="@drawable/round_back"
+        android:background="@color/buttoncolor"
         android:textStyle="bold"/>
 
 </LinearLayout>

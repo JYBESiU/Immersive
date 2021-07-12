@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/lightred"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -25,8 +26,8 @@
                 android:text="승패"
                 android:textStyle="bold"
                 android:textSize="25sp"
-                android:layout_weight="4"
-                android:gravity="center"
+                android:layout_weight="3"
+                android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -63,7 +64,7 @@ android:gravity="start"
                 android:id="@+id/oppo"
                 android:text="상대방"
                 android:textSize="22sp"
-                android:layout_weight="3"
+                android:layout_weight="2"
 android:gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

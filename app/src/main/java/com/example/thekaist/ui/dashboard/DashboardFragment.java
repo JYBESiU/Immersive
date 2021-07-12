@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -82,11 +83,14 @@ public class DashboardFragment extends Fragment {
                     for(int i=0;i<resultList.size();i++) {
                         UserInfo result = resultList.get(i);
                         ranklist.add(result);
+
+
                         Log.d("look", ""+ranklist.size()+" and "+result.getId());
 
 
                     }
 
+                    Collections.reverse(ranklist);
                     dashboardAdapter = new DashboardAdapter(getActivity(), ranklist);
 
                     Log.d("look", ""+ranklist.size());

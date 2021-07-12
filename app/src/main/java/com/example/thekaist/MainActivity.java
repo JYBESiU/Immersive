@@ -3,14 +3,29 @@ package com.example.thekaist;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.util.exception.KakaoException;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -21,9 +36,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "사용자";
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     public static String BASE_URL = "http://192.249.18.171:443";
+    private ISessionCallback mSessionCallback;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
+
+
+        Log.d("GET_KEYHASH", getKeyHash(this));
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -54,6 +75,50 @@ public class MainActivity extends AppCompatActivity {
                 handleSignupDialog();
             }
         });
+
+        mSessionCallback = new ISessionCallback() {
+            @Override
+            public void onSessionOpened() {
+                //로그인 요청
+                UserManagement.getInstance().me(new MeV2ResponseCallback() {
+
+                    @Override
+                    public void onFailure(ErrorResult errorResult) {
+                        Toast.makeText(MainActivity.this, "오류", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onSessionClosed(ErrorResult errorResult) {
+
+                        //세션이 닫힘
+                        Toast.makeText(MainActivity.this, "세션닫힘", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onSuccess(MeV2Response result) {
+
+                        Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                        intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
+                        intent.putExtra("name", result.getKakaoAccount().getProfile().getProfileImageUrl());
+                        intent.putExtra("name", result.getKakaoAccount().getEmail());
+                        startActivity(intent);
+
+                        Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+
+            @Override
+            public void onSessionOpenFailed(KakaoException exception) {
+
+
+            }
+        };
+        Session.getCurrentSession().addCallback(mSessionCallback);
+        Session.getCurrentSession().checkAndImplicitOpen();
+
 
     }
 
@@ -165,6 +230,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static String getKeyHash(final Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            if (packageInfo == null)
+                return null;
+
+            for (Signature signature : packageInfo.signatures) {
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    return Base64.encodeToString(md.digest(), Base64.NO_WRAP);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/swipe_rank"
-    android:background="@color/whitegray"
+    android:background="@color/colorPrimaryDark"
     tools:context=".AccessHistory">
 
     <LinearLayout
@@ -21,6 +21,7 @@
             android:textSize="30sp"
             android:textStyle="bold"
             android:gravity="center"
+            android:textColor="@color/whitegray"
             android:layout_marginTop="10sp"
             android:layout_marginBottom="10sp"
             android:id="@+id/History"/>

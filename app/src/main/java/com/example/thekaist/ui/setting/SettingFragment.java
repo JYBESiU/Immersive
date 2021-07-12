@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.thekaist.AccessHistory;
 import com.example.thekaist.FrontActivity;
 import com.example.thekaist.GameActivity;
 import com.example.thekaist.LoginResult;
@@ -105,6 +106,9 @@ public class SettingFragment extends Fragment {
     }
 
     private void history() {
+        Intent intent = new Intent(getContext(), AccessHistory.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
     }
 
     private void change() {

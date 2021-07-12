@@ -76,7 +76,6 @@ public class SettingFragment extends Fragment {
         logout = root.findViewById(R.id.logout);
         img = root.findViewById(R.id.User_pic);
 
-
         init();
 
         profile_id.setText("ID  "+id);

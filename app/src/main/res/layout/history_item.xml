@@ -1,90 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="5dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="8dp"
         app:cardBackgroundColor="@color/lightred"
-        tools:ignore="MissingConstraints">
+        android:layout_marginBottom="12dp"
+        android:layout_marginHorizontal="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <TextView
                 android:id="@+id/Result"
                 android:text="승패"
                 android:textStyle="bold"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:layout_weight="3"
                 android:gravity="start"
-                android:textColor="@color/whitegray"
-
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/whitegray"/>
 
             <TextView
                 android:id="@+id/my_scr"
                 android:text="my_scr"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 android:layout_weight="2"
                 android:gravity="end"
-                android:textColor="@color/whitegray"
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:textColor="@color/whitegray"/>
 
             <TextView
                 android:id="@+id/versus"
                 android:text=" : "
-                android:textSize="22sp"
+                android:textSize="16sp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/whitegray"
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:textColor="@color/whitegray"/>
             <TextView
                 android:id="@+id/oppo_scr"
                 android:text="oppo_scr"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 android:layout_weight="2"
-android:gravity="start"
-                android:textColor="@color/whitegray"
-
+                android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:textColor="@color/whitegray"/>
 
             <TextView
                 android:id="@+id/oppo"
                 android:text="상대방"
-                android:textSize="22sp"
-                android:layout_weight="2"
-android:gravity="end"
-                android:textColor="@color/whitegray"
-
+                android:textSize="20sp"
+                android:layout_weight="3"
+                android:gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                />
-
-
+                android:textColor="@color/whitegray"/>
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="20dp"
     android:background="@color/colorPrimaryDark"
-    tools:context=".changeUserinfo">
+    tools:context=".changeUserinfo"
+    android:scrollbars="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
         android:id="@+id/UserName"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:textColor="@color/whitegray"
         tools:ignore="MissingConstraints" />
 
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/changeName"
-        android:textColor="@color/buttoncolor"
+        android:textColor="@color/whitegray"
         android:backgroundTint="@color/whitegray"
         android:textColorHint="@color/whitegray"
         app:layout_constraintTop_toBottomOf="@+id/UserName"
@@ -37,19 +38,17 @@
         android:text="비밀번호"
         android:id="@+id/UserPwd"
         android:textColor="@color/whitegray"
-
         app:layout_constraintTop_toBottomOf="@+id/changeName"
         android:layout_marginTop="15dp"
         android:textSize="20sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/changePwd"
         android:gravity="center"
-        android:textColor="@color/buttoncolor"
+        android:textColor="@color/whitegray"
         android:backgroundTint="@color/whitegray"
         android:textColorHint="@color/whitegray"
         app:layout_constraintTop_toBottomOf="@+id/UserPwd"
@@ -62,12 +61,11 @@
         android:id="@+id/UserPic"
         android:text="사용자 사진"
         android:textColor="@color/whitegray"
-
         app:layout_constraintTop_toBottomOf="@+id/changePwd"
         android:layout_marginTop="15dp"
         android:textSize="20sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,43 +73,47 @@
         android:gravity="center"
         android:backgroundTint="@color/whitegray"
         android:textColorHint="@color/whitegray"
-        android:textColor="@color/buttoncolor"
+        android:textColor="@color/whitegray"
         app:layout_constraintTop_toBottomOf="@+id/UserPic"
         android:hint="원래 이미지"
         android:textSize="25sp"/>
 
-
     <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="320dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/btns"
         android:id="@+id/imgs"
-        android:layout_marginStart="23dp"
         app:layout_constraintTop_toBottomOf="@+id/changeImg"
         android:orientation="horizontal"
-        android:columnCount="2">
+        android:columnCount="2"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="170dp"
             android:id="@+id/Img1"
             android:src="@drawable/character1"/>
 
         <ImageView
             android:id="@+id/Img2"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="170dp"
             android:src="@drawable/character2"/>
+
         <ImageView
             android:id="@+id/Img3"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="170dp"
             android:src="@drawable/character3"/>
+
         <ImageView
             android:id="@+id/Img4"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="170dp"
             android:src="@drawable/character4"/>
-
     </GridLayout>
 
     <LinearLayout
@@ -119,32 +121,52 @@
         android:layout_height="wrap_content"
         android:id="@+id/btns"
         app:layout_constraintBottom_toBottomOf="parent"
-        >
+        android:orientation="horizontal">
 
-        <Button
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/save"
-            android:text="저장"
-            android:background="@color/buttoncolor"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_marginEnd="5dp"
-            />
+            app:cardCornerRadius="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/info_card"
+            android:layout_marginTop="40sp"
+            app:cardElevation="8dp"
+            tools:ignore="MissingConstraints"
+            android:layout_marginHorizontal="10dp"
+            app:cardBackgroundColor="@color/buttoncolor"
+            android:layout_weight="1">
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/save"
+                android:text="저장"
+                android:textSize="18dp"
+                android:background="@color/buttoncolor"
+                android:gravity="center"/>
+        </androidx.cardview.widget.CardView>
 
-        <Button
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cancel"
-            android:text="종료"
-            android:background="@color/buttoncolor"
+            app:cardCornerRadius="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/info_card"
+            android:layout_marginTop="40sp"
+            app:cardElevation="8dp"
+            tools:ignore="MissingConstraints"
+            android:layout_marginHorizontal="10dp"
+            app:cardBackgroundColor="@color/buttoncolor"
+            android:layout_weight="1">
 
-            android:gravity="center"
-            android:layout_weight="1"
-            />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cancel"
+                android:text="종료"
+                android:textSize="18dp"
+                android:background="@color/buttoncolor"
+                android:gravity="center" />
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

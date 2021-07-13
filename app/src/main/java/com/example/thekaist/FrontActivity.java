@@ -8,6 +8,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thekaist.ui.home.HomeFragment;
@@ -54,6 +57,7 @@ public class FrontActivity extends AppCompatActivity {
 
     public static String id;
 
+    public String ask, accept;
 
 
     @Override
@@ -112,9 +116,6 @@ public class FrontActivity extends AppCompatActivity {
             });
         }
 
-
-
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_setting)
@@ -139,6 +140,7 @@ public class FrontActivity extends AppCompatActivity {
         mSocket.on(Socket.EVENT_CONNECT, waitBattle);
         mSocket.on("challengeCome", challengeCome);
         mSocket.on("startGame", startGame);
+        mSocket.on("yourRejected", yourRejected);
     }
 
     @Override
@@ -154,37 +156,45 @@ public class FrontActivity extends AppCompatActivity {
         }
     };
 
+    public Emitter.Listener yourRejected = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Toast.makeText(getApplicationContext(), "거절당했습니다...", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     public Emitter.Listener challengeCome = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             runOnUiThread(() -> {
                 Log.d("TTTTTTA", "challengeCome");
-                String ask = args[0].toString();
-                String accept = args[1].toString();
+                ask = args[0].toString();
+                accept = args[1].toString();
+
+                View view = getLayoutInflater().inflate(R.layout.pass_dialog, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setMessage("Challenge from " + ask);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setView(view).show();
+
+                Button yes_button = view.findViewById(R.id.yes);
+                Button no_button = view.findViewById(R.id.no);
+
+                TextView msg = view.findViewById(R.id.dialog_msg);
+
+                msg.setText(ask + "에게서 대결 요청이 왔습니다. 수락하시겠습니까?");
+
+                yes_button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View view) {
                         mSocket.emit("acceptGame", ask, accept);
-//
-//                        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-//                        intent.putExtra("ask", args[0].toString());
-//                        intent.putExtra("accept", args[1].toString());
-//
-//                        startActivity(intent);
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                no_button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getApplicationContext(), "NO Click", Toast.LENGTH_SHORT).show();
+                    public void onClick(View view) {
+                        mSocket.emit("challengeReject", ask, accept);
                     }
                 });
-
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
             });
         }
     };
@@ -195,7 +205,6 @@ public class FrontActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             intent.putExtra("ask", args[0].toString());
             intent.putExtra("accept", args[1].toString());
-
 
             HashMap<String, String> map = new HashMap<>();
 
@@ -218,9 +227,6 @@ public class FrontActivity extends AppCompatActivity {
 
                 }
             });
-
-
-
 
             JSONArray jsonArray1 = (JSONArray) args[2];
             ArrayList<Integer> list1 = new ArrayList<Integer>();
@@ -253,8 +259,6 @@ public class FrontActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-
-
         if(System.currentTimeMillis() - time >= 2000){
             time=System.currentTimeMillis();
             Toast.makeText(getApplicationContext(),"한번더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -274,20 +278,15 @@ public class FrontActivity extends AppCompatActivity {
                         Log.d("look", "changed");
                         flag = 1;
                         finish();
-
                     }
                     else if(response.code()==404){
                         Log.d("look", "not changed");
-
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-
                 }
-
             });
 
         }

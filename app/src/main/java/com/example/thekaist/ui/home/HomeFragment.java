@@ -146,7 +146,7 @@ public class HomeFragment extends Fragment {
                 onlist.clear();
                 getOnline();
 
-               adapter = new OnlineAdapter(getContext(), onlist);
+                adapter = new OnlineAdapter(getContext(), onlist);
 
                 recyclerView.setAdapter(adapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

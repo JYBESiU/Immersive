@@ -69,6 +69,31 @@ public class DashboardFragment extends Fragment {
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
 
+
+        getRanking();
+
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ranklist.clear();
+                getRanking();
+
+                dashboardAdapter = new DashboardAdapter(getContext(), ranklist);
+
+                recyclerView.setAdapter(dashboardAdapter);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+                RecyclerView.LayoutManager layoutManager = linearLayoutManager;
+                recyclerView.setLayoutManager(layoutManager);
+
+                swipe.setRefreshing(false);
+            }
+        });
+        return root;
+    }
+
+    private void getRanking() {
         Call<List<UserInfo>> call = retrofitInterface.executeRank();//로그인리절트 클래스 부르는데저 map넣어서 함
 
         ranklist = new ArrayList<>();
@@ -84,19 +109,15 @@ public class DashboardFragment extends Fragment {
                         UserInfo result = resultList.get(i);
                         ranklist.add(result);
 
-
                         Log.d("look", ""+ranklist.size()+" and "+result.getId());
-
 
                     }
 
-                    Collections.reverse(ranklist);
+                    Collections.sort(ranklist, Collections.reverseOrder()); // 랭킹 정렬 고치기
                     dashboardAdapter = new DashboardAdapter(getActivity(), ranklist);
 
                     Log.d("look", ""+ranklist.size());
                     recyclerView.setAdapter(dashboardAdapter);
-
-
 
                 } else if (response.code() == 404) {
                     Toast.makeText(getContext(), "Wrong Credential in ranks",
@@ -111,18 +132,6 @@ public class DashboardFragment extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
 
-
         });
-
-
-
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                swipe.setRefreshing(false);
-            }
-        });
-        return root;
     }
 }

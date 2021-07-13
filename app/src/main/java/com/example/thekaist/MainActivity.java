@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "사용자";
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    public static String BASE_URL = "http://192.249.18.152:80";
+    public static String BASE_URL = "http://192.249.18.171:443";
     private ISessionCallback mSessionCallback;
 
 

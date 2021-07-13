@@ -1,11 +1,21 @@
 package com.example.thekaist;
 
 import android.app.Application;
+import android.widget.ImageView;
 
 public class online_player implements Comparable<online_player>{
     private String name;
     private String id;
     private String online;
+    private ImageView status;
+
+    public ImageView getStatus() {
+        return status;
+    }
+
+    public void setStatus(ImageView status) {
+        this.status = status;
+    }
 
     public String getOnline() {
         return online;

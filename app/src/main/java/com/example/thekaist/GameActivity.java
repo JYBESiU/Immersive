@@ -50,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
     public static int roomid;
     public static int ask_scr = 0;
     public static int accept_scr = 0;
+    public String ask_name, accept_name;
 
     private TextView target, ply1, ply1scr, ply2, ply2scr, ask_pass, accept_pass;
     private RecyclerView recyclerView;
@@ -113,10 +114,11 @@ public class GameActivity extends AppCompatActivity {
         cards_order = intent.getExtras().getIntegerArrayList("cards_order");
         nums_order = intent.getExtras().getIntegerArrayList("nums_order");
         roomid = intent.getExtras().getInt("roomid");
+        ask_name = intent.getExtras().getString("ask_name");
+        accept_name = intent.getExtras().getString("accept_name");
 
         makeImageList();
 
-        name = SettingFragment.name;
         id = FrontActivity.id;
 
         target = findViewById(R.id.target);
@@ -125,8 +127,8 @@ public class GameActivity extends AppCompatActivity {
         ply2 = findViewById(R.id.ply2);
         ply2scr = findViewById(R.id.ply2score);
 
-        ply1.setText(ask);
-        ply2.setText(accept);
+        ply1.setText(ask_name);
+        ply2.setText(accept_name);
 
         buzzer = findViewById(R.id.buzzer);
         pass = findViewById(R.id.pass);
@@ -225,13 +227,11 @@ public class GameActivity extends AppCompatActivity {
 
         hSocket.on("yourRejected", yourRejected);
         hSocket.on("emoji", emoji);
+        hSocket.on("stop", stop);
+
+
     }
 
-    @Override
-    public void onBackPressed() {
-        hSocket.emit("leave", ask, accept, id);
-        super.onBackPressed();
-    }
 
     public Emitter.Listener yourRejected = new Emitter.Listener() {
         @Override
@@ -394,9 +394,6 @@ public class GameActivity extends AppCompatActivity {
 
                 answer.setVisibility(View.INVISIBLE);
 
-                ask_pass.setText("");
-                accept_pass.setText("");
-
                 buzzer.setEnabled(true);
                 buzzer.setBackgroundColor(getResources().getColor(R.color.buzzertrans));
                 buzzer.setImageResource(R.drawable.push_img);
@@ -426,7 +423,7 @@ public class GameActivity extends AppCompatActivity {
                 ply2scr.setText(Integer.toString(accept_scr));
 
                 if(id.equals(ask)){
-                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid);
+                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, "");
 
                 }
             });
@@ -552,6 +549,39 @@ public class GameActivity extends AppCompatActivity {
         }
     };
 
+    public Emitter.Listener stop = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            HashMap<String, String> map = new HashMap<>();
+
+            map.put("id", id);
+            map.put("result", "");
+
+            Call<Void> call = retrofitInterface.executeWinLose(map);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.code()==200){
+                        Log.d("game", id+"changed");
+                        hSocket.emit("leave", ask, accept, id);
+
+                        finish();
+                    }
+                    else if(response.code()==400){
+                        Log.d("game", id+"not changed");
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                }
+            });
+        }
+    };
+
 
 
 
@@ -593,6 +623,26 @@ public class GameActivity extends AppCompatActivity {
 
         for (int i = 0; i < 16; i++) {
             this.image_list.add(cards_list.get(cards_order.get(i)));
+        }
+    }
+
+
+    private long time= 0;
+
+    @Override
+    public void onBackPressed(){
+        if(System.currentTimeMillis() - time >= 2000){
+            time=System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(),"한번더 누르면 게임이 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(System.currentTimeMillis() - time < 2000 ){
+
+
+            hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, "stop");
+
+
+
         }
     }
 }

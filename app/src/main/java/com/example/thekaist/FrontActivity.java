@@ -57,7 +57,8 @@ public class FrontActivity extends AppCompatActivity {
 
     public static String id;
 
-    public String ask, accept;
+    public String ask, accept, ask_name;
+    private String name = HomeFragment.name;
 
 
     @Override
@@ -82,7 +83,7 @@ public class FrontActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        String name = intent.getStringExtra("name");
+        name = intent.getStringExtra("name");
         String imgnumber = intent.getStringExtra("imgnumber");
 
 
@@ -112,6 +113,7 @@ public class FrontActivity extends AppCompatActivity {
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(FrontActivity.this, t.getMessage(),
                             Toast.LENGTH_LONG).show();
+                    finish();
                 }
             });
         }
@@ -171,21 +173,28 @@ public class FrontActivity extends AppCompatActivity {
                 ask = args[0].toString();
                 accept = args[1].toString();
 
+                ask_name = args[2].toString();
+
                 View view = getLayoutInflater().inflate(R.layout.pass_dialog, null);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setView(view).show();
+                builder.setView(view);
+
+                AlertDialog ad = builder.create();
+                ad.show();
 
                 Button yes_button = view.findViewById(R.id.yes);
                 Button no_button = view.findViewById(R.id.no);
 
                 TextView msg = view.findViewById(R.id.dialog_msg);
 
-                msg.setText(ask + "에게서 대결 요청이 왔습니다. 수락하시겠습니까?");
+                msg.setText(ask_name + "에게서 대결 요청이 왔습니다. 수락하시겠습니까?");
 
                 yes_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mSocket.emit("acceptGame", ask, accept);
+                        mSocket.emit("acceptGame", ask, accept, ask_name, name);
+                        ad.dismiss();
                     }
                 });
 
@@ -206,6 +215,8 @@ public class FrontActivity extends AppCompatActivity {
             intent.putExtra("ask", args[0].toString());
             intent.putExtra("accept", args[1].toString());
             intent.putExtra("roomid", (int)args[4]);
+            intent.putExtra("ask_name", args[5].toString());
+            intent.putExtra("accept_name", args[6].toString());
 
             HashMap<String, String> map = new HashMap<>();
 

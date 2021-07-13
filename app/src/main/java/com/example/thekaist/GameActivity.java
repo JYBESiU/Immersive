@@ -275,12 +275,12 @@ public class GameActivity extends AppCompatActivity {
                     TimerTask task = new TimerTask() {
                         public void run () {
                             if (passFlag) {
-                                hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, "", passFlag);
+                                hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr, passFlag);
                                 selects = new ArrayList<Integer>();
                                 passFlag = false;
                                 card_clickable = false;
                             } else {
-                                hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr);
+                                hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr, passFlag);
                                 selects = new ArrayList<Integer>();
                             }
 
@@ -400,6 +400,8 @@ public class GameActivity extends AppCompatActivity {
 
                 ask_scr = (int) args[2];
                 accept_scr = (int) args[3];
+                ply1scr.setText(Integer.toString(ask_scr));
+                ply2scr.setText(Integer.toString(accept_scr));
 
                 answer.setVisibility(View.INVISIBLE);
 
@@ -426,7 +428,7 @@ public class GameActivity extends AppCompatActivity {
                 ply2scr.setText(Integer.toString(accept_scr));
 
                 if(id.equals(ask)){
-                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, "", passFlag);
+                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, 0);
                 }
             });
         }
@@ -635,13 +637,13 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed(){
         if(System.currentTimeMillis() - time >= 2000){
             time=System.currentTimeMillis();
-            Toast.makeText(getApplicationContext(),"한번더 누르면 게임이 종료됩니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"한 번 더 누르면 게임이 종료됩니다.", Toast.LENGTH_SHORT).show();
         }
 
         else if(System.currentTimeMillis() - time < 2000 ){
 
 
-            hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, "stop");
+            hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, 1);
 
 
 

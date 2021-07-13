@@ -130,7 +130,7 @@
             android:id="@+id/logout"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="카카오 로그아웃"
+            android:text="로그아웃"
             android:gravity="center"
             android:layout_margin="10dp"
             android:textColor="@color/black"/>

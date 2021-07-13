@@ -271,7 +271,7 @@ public class FrontActivity extends AppCompatActivity {
     public void onBackPressed(){
         if(System.currentTimeMillis() - time >= 2000){
             time=System.currentTimeMillis();
-            Toast.makeText(getApplicationContext(),"한번더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
         }
 
         else if(System.currentTimeMillis() - time < 2000 ){

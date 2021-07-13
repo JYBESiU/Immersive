@@ -2,11 +2,16 @@ package com.example.thekaist;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,24 +25,35 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GameActivity extends AppCompatActivity {
     public static String ask;
     public static String accept;
     public static String room;
+    public static int roomid;
     public static int ask_scr = 0;
     public static int accept_scr = 0;
 
     private TextView target, ply1, ply1scr, ply2, ply2scr;
     private RecyclerView recyclerView;
     private CardsAdapter cardsAdapter;
-    private ImageButton buzzer, pass;
+    private ImageButton buzzer, pass, smile, hmm, angry;
+    private ImageView emojiimg;
 
     public static Socket mSocket;
 
@@ -49,6 +65,8 @@ public class GameActivity extends AppCompatActivity {
     String id;
     String whosTurn;
 
+    private Retrofit retrofit;
+    private RetrofitInterface retrofitInterface;
     private String BASE_URL = MainActivity.BASE_URL;
 
     static ArrayList<Drawable> cards_list = new ArrayList<Drawable>();
@@ -63,14 +81,26 @@ public class GameActivity extends AppCompatActivity {
     String targetString;
     boolean card_clickable = false;
 
+    KonfettiView konfettiView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
+
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
+
+        konfettiView = findViewById(R.id.konfetti);
 
         Intent intent = getIntent();
         ask = intent.getExtras().getString("ask");
@@ -78,6 +108,7 @@ public class GameActivity extends AppCompatActivity {
         room = ask + "&" + accept;
         cards_order = intent.getExtras().getIntegerArrayList("cards_order");
         nums_order = intent.getExtras().getIntegerArrayList("nums_order");
+        roomid = intent.getExtras().getInt("roomid");
 
         makeImageList();
 
@@ -95,6 +126,10 @@ public class GameActivity extends AppCompatActivity {
 
         buzzer = findViewById(R.id.buzzer);
         pass = findViewById(R.id.pass);
+        smile = findViewById(R.id.smile);
+        hmm = findViewById(R.id.hmm);
+        angry = findViewById(R.id.angry);
+        emojiimg = findViewById(R.id.emoji);
 
         recyclerView = findViewById(R.id.show_cards);
         recyclerView.setClickable(false);
@@ -137,8 +172,33 @@ public class GameActivity extends AppCompatActivity {
                 pass.setEnabled(false);
                 card_clickable = false;
                 hSocket.emit("passTurn", room, ask_scr, accept_scr);
+
+
             }
         });
+
+        smile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hSocket.emit("sendEmoji", room, "smile");
+            }
+        });
+
+        hmm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hSocket.emit("sendEmoji", room, "hmm");
+            }
+        });
+
+        angry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hSocket.emit("sendEmoji", room, "angry");
+            }
+        });
+
+
         hSocket = FrontActivity.mSocket;
 
         hSocket.on("opponentClick", opponentClick);
@@ -150,6 +210,7 @@ public class GameActivity extends AppCompatActivity {
         hSocket.on("opponentTurn", opponentTurn);
         hSocket.on("win", win);
         hSocket.on("lose", lose);
+        hSocket.on("emoji", emoji);
     }
 
     @Override
@@ -157,6 +218,30 @@ public class GameActivity extends AppCompatActivity {
         hSocket.emit("leave", ask, accept, id);
         super.onBackPressed();
     }
+
+    public Emitter.Listener emoji = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(()->{
+               String img = args[0].toString();
+               switch(img){
+                   case "smile":
+                       emojiimg.setImageResource(R.drawable.smile);
+                       break;
+                   case "hmm":
+                       emojiimg.setImageResource(R.drawable.hmm);
+                       break;
+                   case "angry":
+                       emojiimg.setImageResource(R.drawable.angry);
+                       break;
+
+
+               }
+
+
+            });
+        }
+    };
 
     public Emitter.Listener opponentClick = new Emitter.Listener() {
         @Override
@@ -263,7 +348,11 @@ public class GameActivity extends AppCompatActivity {
                 accept_scr = (int) args[1];
                 ply1scr.setText(Integer.toString(ask_scr));
                 ply2scr.setText(Integer.toString(accept_scr));
-                hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr);
+
+                if(id.equals(ask)){
+                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid);
+
+                }
             });
         }
     };
@@ -290,18 +379,80 @@ public class GameActivity extends AppCompatActivity {
     public Emitter.Listener win = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            runOnUiThread(() -> {
 
-            });
+                HashMap<String, String> map = new HashMap<>();
+                Log.d("game", id+"win 받음");
+
+                map.put("id", id);
+                map.put("result", "win");
+
+                Call<Void> call = retrofitInterface.executeWinLose(map);
+
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if(response.code()==200){
+                            Log.d("game", id+"changed to win");
+                            konfettiView.build()
+                                    .addColors(Color.RED, Color.YELLOW, Color.WHITE)
+                                    .setDirection(0.0, 359.0)
+                                    .setSpeed(1f, 5f)
+                                    .setFadeOutEnabled(true)
+                                    .setTimeToLive(1000L)
+                                    .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                                    .addSizes(new Size(8,4f))
+                                    .setPosition(-50f,konfettiView.getWidth()+50f, -50f, -50f)
+                                    .streamFor(300, 5000L);
+
+
+                            hSocket.emit("leave", ask, accept, id);
+                            finish();
+                        }
+                        else if(response.code()==400){
+                            Log.d("game", id+"not changed to win");
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.d("game", "fail");
+
+                    }
+                });
         }
     };
 
     public Emitter.Listener lose = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            runOnUiThread(() -> {
+                HashMap<String, String> map = new HashMap<>();
 
-            });
+                map.put("id", id);
+                map.put("result", "lose");
+
+                Call<Void> call = retrofitInterface.executeWinLose(map);
+
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if(response.code()==200){
+                            Log.d("game", id+"changed to lose");
+                            hSocket.emit("leave", ask, accept, id);
+
+                            finish();
+                        }
+                        else if(response.code()==400){
+                            Log.d("game", id+"not changed to lose");
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
         }
     };
 

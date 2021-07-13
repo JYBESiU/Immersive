@@ -90,7 +90,7 @@ public class DashboardFragment extends Fragment {
 
                     }
 
-                    Collections.reverse(ranklist);
+                    Collections.sort(ranklist, Collections.reverseOrder());
                     dashboardAdapter = new DashboardAdapter(getActivity(), ranklist);
 
                     Log.d("look", ""+ranklist.size());

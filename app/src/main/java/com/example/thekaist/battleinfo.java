@@ -1,12 +1,21 @@
 package com.example.thekaist;
 
 public class battleinfo {
+    private Integer battleid;
     private String ask;
     private String accept;
     private String winner;
     private String loser;
     private Integer ask_scr;
     private Integer accept_scr;
+
+    public Integer getBattleid() {
+        return battleid;
+    }
+
+    public void setBattleid(Integer battleid) {
+        this.battleid = battleid;
+    }
 
     public String getAsk() {
         return ask;

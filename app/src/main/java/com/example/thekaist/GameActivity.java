@@ -248,6 +248,7 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         hSocket.emit("passTurn", room, id, ask, accept, ask_scr, accept_scr);
+                        ad.dismiss();
                     }
                 });
 
@@ -262,11 +263,11 @@ public class GameActivity extends AppCompatActivity {
                         buzzer.setEnabled(false);
 
                         passFlag = true;
+                        ad.dismiss();
                     }
                 });
 
                 ad.show();
-                ad.dismiss();
             });
         }
     };

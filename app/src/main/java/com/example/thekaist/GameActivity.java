@@ -51,7 +51,7 @@ public class GameActivity extends AppCompatActivity {
     public static int ask_scr = 0;
     public static int accept_scr = 0;
 
-    private TextView target, ply1, ply1scr, ply2, ply2scr, ask_pass, accept_pass;
+    private TextView target, ply1, ply1scr, ply2, ply2scr;
     private RecyclerView recyclerView;
     private CardsAdapter cardsAdapter;
     private ImageButton buzzer, pass, smile, hmm, angry;
@@ -181,7 +181,7 @@ public class GameActivity extends AppCompatActivity {
                 pass.setBackgroundColor(getResources().getColor(R.color.passon));
                 pass.setEnabled(false);
                 card_clickable = false;
-                hSocket.emit("passTurn", room, ask_scr, accept_scr);
+                hSocket.emit("passTurn", room, id, ask, accept, ask_scr, accept_scr);
             }
         });
 
@@ -275,7 +275,10 @@ public class GameActivity extends AppCompatActivity {
                     TimerTask task = new TimerTask() {
                         public void run () {
                             if (passFlag) {
-                                hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr);
+                                hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, passFlag);
+                                selects = new ArrayList<Integer>();
+                                passFlag = false;
+                                card_clickable = false;
                             } else {
                                 hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr);
                                 selects = new ArrayList<Integer>();
@@ -314,7 +317,7 @@ public class GameActivity extends AppCompatActivity {
 
                 View view = getLayoutInflater().inflate(R.layout.pass_dialog, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                AlertDialog ad = builder.setView(view).create();
+                AlertDialog ad = builder.setView(view).setCancelable(false).create();
 
                 Button yes_button = view.findViewById(R.id.yes);
                 Button no_button = view.findViewById(R.id.no);
@@ -330,7 +333,7 @@ public class GameActivity extends AppCompatActivity {
                 no_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mSocket.emit("challengeReject", ask, accept);
+                        hSocket.emit("challengeReject", id, ask, accept);
                         buzzer.setBackgroundColor(getResources().getColor(R.color.buzzerred));
                         whosTurn = id;
                         hSocket.emit("startTurn", room, id);
@@ -383,6 +386,12 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void call(Object... args) {
             runOnUiThread(() -> {
+                image_list.clear();
+                for (int i = 0; i < 16; i++) {
+                    image_list.add(cards_list.get(cards_order.get(i)));
+                }
+                cardsAdapter.notifyDataSetChanged();
+
                 target.setText(" ");
                 targetString = args[0].toString();
                 targetNum = Integer.parseInt(args[1].toString());
@@ -393,9 +402,6 @@ public class GameActivity extends AppCompatActivity {
                 accept_scr = (int) args[3];
 
                 answer.setVisibility(View.INVISIBLE);
-
-                ask_pass.setText("");
-                accept_pass.setText("");
 
                 buzzer.setEnabled(true);
                 buzzer.setBackgroundColor(getResources().getColor(R.color.buzzertrans));
@@ -411,12 +417,6 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void call(Object... args) {
             runOnUiThread(() -> {
-                image_list.clear();
-                for (int i = 0; i < 16; i++) {
-                    image_list.add(cards_list.get(cards_order.get(i)));
-                }
-                cardsAdapter.notifyDataSetChanged();
-
                 answer.setImageResource(R.drawable.correct_imgg);
                 answer.setVisibility(View.VISIBLE);
 
@@ -426,8 +426,7 @@ public class GameActivity extends AppCompatActivity {
                 ply2scr.setText(Integer.toString(accept_scr));
 
                 if(id.equals(ask)){
-                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid);
-
+                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, passFlag);
                 }
             });
         }
@@ -501,7 +500,7 @@ public class GameActivity extends AppCompatActivity {
                             };
 
                             Timer timer = new Timer();
-                            timer.schedule(task, 300);
+                            timer.schedule(task, 5000);
 
                         }
                         else if(response.code()==400){

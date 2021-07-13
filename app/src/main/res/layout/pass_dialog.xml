@@ -40,7 +40,6 @@
                 android:text="YES"
                 android:id="@+id/yes"
                 android:background="@color/buttoncolor"
-                android:textStyle="bold"
                 android:textSize="16dp"/>
         </androidx.cardview.widget.CardView>
 
@@ -60,7 +59,6 @@
                 android:text="NO"
                 android:id="@+id/no"
                 android:background="@color/buttoncolor"
-                android:textStyle="bold"
                 android:textSize="16dp"/>
         </androidx.cardview.widget.CardView>
 

@@ -205,6 +205,7 @@ public class FrontActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             intent.putExtra("ask", args[0].toString());
             intent.putExtra("accept", args[1].toString());
+            intent.putExtra("roomid", (int)args[4]);
 
             HashMap<String, String> map = new HashMap<>();
 

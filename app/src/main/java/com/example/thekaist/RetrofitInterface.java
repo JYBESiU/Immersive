@@ -40,4 +40,7 @@ public interface RetrofitInterface {
 
     @POST("/getbattle")
     Call<List<battleinfo>> executeHistory(@Body HashMap<String, String> map);
+
+    @POST("/winLose")
+    Call<Void> executeWinLose(@Body HashMap<String, String> map);
 }

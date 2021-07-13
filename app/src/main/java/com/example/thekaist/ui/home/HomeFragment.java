@@ -213,7 +213,7 @@ public class HomeFragment extends Fragment {
 
                     }
 
-                    Collections.reverse(onlist);
+                    Collections.sort(onlist, Collections.reverseOrder());
                     OnlineAdapter adapter = new OnlineAdapter(getContext(), onlist);
                     Log.d("look", ""+onlist.size());
                     recyclerView.setAdapter(adapter);

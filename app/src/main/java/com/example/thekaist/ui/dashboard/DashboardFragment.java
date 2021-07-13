@@ -113,7 +113,7 @@ public class DashboardFragment extends Fragment {
 
                     }
 
-                    Collections.sort(ranklist, Collections.reverseOrder()); // 랭킹 정렬 고치기
+                    Collections.sort(ranklist, Collections.reverseOrder());
                     dashboardAdapter = new DashboardAdapter(getActivity(), ranklist);
 
                     Log.d("look", ""+ranklist.size());

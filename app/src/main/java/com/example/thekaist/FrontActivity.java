@@ -65,8 +65,6 @@ public class FrontActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -158,7 +156,7 @@ public class FrontActivity extends AppCompatActivity {
         }
     };
 
-    public Emitter.Listener yourRejected = new Emitter.Listener() {
+    public  Emitter.Listener yourRejected = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             Toast.makeText(getApplicationContext(), "거절당했습니다...", Toast.LENGTH_SHORT).show();
@@ -178,10 +176,7 @@ public class FrontActivity extends AppCompatActivity {
                 View view = getLayoutInflater().inflate(R.layout.pass_dialog, null);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setView(view);
-
-                AlertDialog ad = builder.create();
-                ad.show();
+                AlertDialog ad = builder.setView(view).setCancelable(false).create();
 
                 Button yes_button = view.findViewById(R.id.yes);
                 Button no_button = view.findViewById(R.id.no);
@@ -202,8 +197,11 @@ public class FrontActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         mSocket.emit("challengeReject", ask, accept);
+                        ad.dismiss();
                     }
                 });
+
+                ad.show();
             });
         }
     };

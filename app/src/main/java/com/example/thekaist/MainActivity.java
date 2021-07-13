@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-
         Log.d("GET_KEYHASH", getKeyHash(this));
 
         retrofit = new Retrofit.Builder()

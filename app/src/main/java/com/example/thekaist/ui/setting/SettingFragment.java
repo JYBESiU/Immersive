@@ -72,7 +72,6 @@ public class SettingFragment extends Fragment {
         profile_id = root.findViewById(R.id.user_id);
         profile_change = root.findViewById(R.id.change);
         profile_history = root.findViewById(R.id.history);
-        develop = root.findViewById(R.id.developer);
         logout = root.findViewById(R.id.logout);
         img = root.findViewById(R.id.User_pic);
 

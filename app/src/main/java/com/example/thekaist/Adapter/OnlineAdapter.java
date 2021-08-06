@@ -1,6 +1,7 @@
 package com.example.thekaist.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,14 +56,15 @@ public class OnlineAdapter extends RecyclerView.Adapter<OnlineAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull @NotNull OnlineAdapter.ViewHolder holder, int position) {
 
-        TextView name, id;
-
         holder.view_name.setText(mList.get(position).getName());
-        if(mList.get(position).getId().equals("true")){
-            holder.view_id.setText("대기 중");
+        if(mList.get(position).getOnline().equals("true")){
+            holder.view_id.setText("Online");
+            holder.status.setBackgroundColor(mcontext.getResources().getColor(R.color.online));
         }
-        if(mList.get(position).getId().equals("playing")){
-            holder.view_id.setText("게임 중");
+        if(mList.get(position).getOnline().equals("playing")){
+            holder.view_id.setText("Playing");
+            holder.status.setBackgroundColor(mcontext.getResources().getColor(R.color.playing));
+
         }
 
 
@@ -80,6 +82,7 @@ public class OnlineAdapter extends RecyclerView.Adapter<OnlineAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView view_name, view_id;
+        ImageView status;
 
 
         public ViewHolder(@NonNull View itemView,  OnItemClickListener listener) {
@@ -87,6 +90,7 @@ public class OnlineAdapter extends RecyclerView.Adapter<OnlineAdapter.ViewHolder
 
             view_name = itemView.findViewById(R.id.item_name);
             view_id = itemView.findViewById(R.id.item_id);
+            status = itemView.findViewById(R.id.status);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

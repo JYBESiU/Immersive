@@ -50,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
     public static int roomid;
     public static int ask_scr = 0;
     public static int accept_scr = 0;
+    public String ask_name, accept_name;
 
     private TextView target, ply1, ply1scr, ply2, ply2scr;
     private RecyclerView recyclerView;
@@ -113,10 +114,11 @@ public class GameActivity extends AppCompatActivity {
         cards_order = intent.getExtras().getIntegerArrayList("cards_order");
         nums_order = intent.getExtras().getIntegerArrayList("nums_order");
         roomid = intent.getExtras().getInt("roomid");
+        ask_name = intent.getExtras().getString("ask_name");
+        accept_name = intent.getExtras().getString("accept_name");
 
         makeImageList();
 
-        name = SettingFragment.name;
         id = FrontActivity.id;
 
         target = findViewById(R.id.target);
@@ -125,8 +127,8 @@ public class GameActivity extends AppCompatActivity {
         ply2 = findViewById(R.id.ply2);
         ply2scr = findViewById(R.id.ply2score);
 
-        ply1.setText(ask);
-        ply2.setText(accept);
+        ply1.setText(ask_name);
+        ply2.setText(accept_name);
 
         buzzer = findViewById(R.id.buzzer);
         pass = findViewById(R.id.pass);
@@ -225,13 +227,11 @@ public class GameActivity extends AppCompatActivity {
 
         hSocket.on("yourRejected", yourRejected);
         hSocket.on("emoji", emoji);
+        hSocket.on("stop", stop);
+
+
     }
 
-    @Override
-    public void onBackPressed() {
-        hSocket.emit("leave", ask, accept, id);
-        super.onBackPressed();
-    }
 
     public Emitter.Listener yourRejected = new Emitter.Listener() {
         @Override
@@ -275,12 +275,12 @@ public class GameActivity extends AppCompatActivity {
                     TimerTask task = new TimerTask() {
                         public void run () {
                             if (passFlag) {
-                                hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, passFlag);
+                                hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr, passFlag);
                                 selects = new ArrayList<Integer>();
                                 passFlag = false;
                                 card_clickable = false;
                             } else {
-                                hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr);
+                                hSocket.emit("endTurn", selects.get(0), selects.get(1), selects.get(2), targetString, targetNum, id, ask, accept, ask_scr, accept_scr, passFlag);
                                 selects = new ArrayList<Integer>();
                             }
 
@@ -400,6 +400,8 @@ public class GameActivity extends AppCompatActivity {
 
                 ask_scr = (int) args[2];
                 accept_scr = (int) args[3];
+                ply1scr.setText(Integer.toString(ask_scr));
+                ply2scr.setText(Integer.toString(accept_scr));
 
                 answer.setVisibility(View.INVISIBLE);
 
@@ -426,7 +428,7 @@ public class GameActivity extends AppCompatActivity {
                 ply2scr.setText(Integer.toString(accept_scr));
 
                 if(id.equals(ask)){
-                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, passFlag);
+                    hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, 0);
                 }
             });
         }
@@ -551,6 +553,39 @@ public class GameActivity extends AppCompatActivity {
         }
     };
 
+    public Emitter.Listener stop = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            HashMap<String, String> map = new HashMap<>();
+
+            map.put("id", id);
+            map.put("result", "");
+
+            Call<Void> call = retrofitInterface.executeWinLose(map);
+
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if(response.code()==200){
+                        Log.d("game", id+"changed");
+                        hSocket.emit("leave", ask, accept, id);
+
+                        finish();
+                    }
+                    else if(response.code()==400){
+                        Log.d("game", id+"not changed");
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+
+                }
+            });
+        }
+    };
+
 
 
 
@@ -592,6 +627,26 @@ public class GameActivity extends AppCompatActivity {
 
         for (int i = 0; i < 16; i++) {
             this.image_list.add(cards_list.get(cards_order.get(i)));
+        }
+    }
+
+
+    private long time= 0;
+
+    @Override
+    public void onBackPressed(){
+        if(System.currentTimeMillis() - time >= 2000){
+            time=System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(),"한 번 더 누르면 게임이 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if(System.currentTimeMillis() - time < 2000 ){
+
+
+            hSocket.emit("endRound", room, ask, accept, ask_scr, accept_scr, roomid, ask_name, accept_name, 1);
+
+
+
         }
     }
 }

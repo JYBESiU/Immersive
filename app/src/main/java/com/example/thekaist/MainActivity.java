@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -41,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "사용자";
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    public static String BASE_URL = "http://192.249.18.171:443";
+    public static String BASE_URL = "http://192.249.18.152:443";
     private ISessionCallback mSessionCallback;
+
 
 
     @Override
@@ -106,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("id", result.getKakaoAccount().getEmail());
                         intent.putExtra("imgnumber", result.getKakaoAccount().getProfile().getProfileImageUrl());
 
-
                         startActivity(intent);
 
                     }
@@ -131,7 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setView(view).show();
+        builder.setView(view);
+        AlertDialog ad = builder.create();
+        builder.show();
 
         Button loginBtn = view.findViewById(R.id.login);
         final EditText emailEdit = view.findViewById(R.id.emailEdit);
@@ -163,8 +166,11 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("imgnumber", "");
 
 
+
+                            ad.dismiss();
                             startActivity(intent);
-                            finish();
+
+                            //finish();
 
                         } else if (response.code() == 404) {
                             Log.d("look", "400");
@@ -269,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+
         Session.getCurrentSession().removeCallback(mSessionCallback);
     }
 }

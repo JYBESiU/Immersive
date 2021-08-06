@@ -83,20 +83,20 @@ public class AccessHistory extends AppCompatActivity {
                             //accept 칸이 본인일때
                             if(result.getWinner().equals(id)){
                                 //이겼을때
-                                item = new history_item("WIN", result.getAccept_scr().toString(), result.getAsk_scr().toString(), result.getAsk());
+                                item = new history_item("WIN", result.getAccept_scr().toString(), result.getAsk_scr().toString(), result.getLoser());
                             }
                             else if(result.getLoser().equals(id)){
-                                item = new history_item("LOSE", result.getAccept_scr().toString(), result.getAsk_scr().toString(), result.getAsk());
+                                item = new history_item("LOSE", result.getAccept_scr().toString(), result.getAsk_scr().toString(), result.getWinner());
                             }
                         }
                         else if(result.getAsk().equals(id)){
                             //ask가 본인일때
                             if(result.getWinner().equals(id)){
                                 //이겼을때
-                                item = new history_item("WIN", result.getAsk_scr().toString(), result.getAccept_scr().toString(), result.getAccept());
+                                item = new history_item("WIN", result.getAsk_scr().toString(), result.getAccept_scr().toString(), result.getLoser());
                             }
                             else if(result.getLoser().equals(id)){
-                                item = new history_item("LOSE", result.getAsk_scr().toString(), result.getAccept_scr().toString(), result.getAccept());
+                                item = new history_item("LOSE", result.getAsk_scr().toString(), result.getAccept_scr().toString(), result.getWinner());
                             }
                         }
 

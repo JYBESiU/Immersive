@@ -34,6 +34,7 @@
             <ImageView
                 android:layout_width="6dp"
                 android:layout_height="6dp"
+                android:id="@+id/status"
                 android:background="@color/playing"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
@@ -45,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:textColor="@color/whitegray"
-                android:text="ID"
+                android:text="플레이상태"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="248dp"/>

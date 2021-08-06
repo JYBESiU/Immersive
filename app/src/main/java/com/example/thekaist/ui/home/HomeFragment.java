@@ -72,7 +72,8 @@ public class HomeFragment extends Fragment {
     FrontActivity frontActivity = (FrontActivity)getActivity();
     Socket hSocket;
     String id = FrontActivity.id;
-    private String oppo;
+    private String oppo, oppo_name;
+    public static String name ;
 
 
     private HomeViewModel homeViewModel;
@@ -185,7 +186,7 @@ public class HomeFragment extends Fragment {
 
 
     private void connectRequest() {
-        hSocket.emit("battle", gson.toJson(new Battle(id, oppo)));
+        hSocket.emit("battle", gson.toJson(new Battle(id, oppo, name, oppo_name)));
     }
 
     private void getOnline() {
@@ -208,6 +209,9 @@ public class HomeFragment extends Fragment {
                             onlist.add(item);
                             Log.d("look", ""+onlist.size()+" and "+item.getId());
                         }
+                        else if(result.getId().equals(id)){
+                            name = result.getName();
+                        }
 
 
 
@@ -223,7 +227,8 @@ public class HomeFragment extends Fragment {
                         public void onItemClick(int position) {
                             Log.d("look", ""+onlist.get(position).getId());
                             oppo = onlist.get(position).getId();
-                            req.setText(onlist.get(position).getName()+"에게 게임 요청");
+                            oppo_name = onlist.get(position).getName();
+                            req.setText(oppo_name+"에게 게임 요청");
                         }
                     });
 
